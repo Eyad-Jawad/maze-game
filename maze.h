@@ -4,7 +4,6 @@
 #include <iostream>
 #include <optional>
 #include <random>
-#include <stack>
 #include <vector>
 
 inline int index(int row, int col, int N) { return row * N + col; }
@@ -13,7 +12,7 @@ class mazeGrid {
 private:
     int side;
     int mazeSize;
-    uint8_t dimentions;
+    int dimentions;
     std::optional <int> _seed;
 
     std::vector <uint8_t> maze;
