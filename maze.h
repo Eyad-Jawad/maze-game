@@ -13,18 +13,16 @@ class mazeGrid {
 private:
     int side;
     int mazeSize;
-    int dimentions;
+    uint8_t dimentions;
     std::optional <int> _seed;
 
-    std::vector <int> maze;
+    std::vector <uint8_t> maze;
     std::vector <std::pair <int, int>> directions;
 
 public:
     mazeGrid(int N) {
         dimentions = N;
-        if (!validDimentions()) {
-            throw std::runtime_error("Invalid maze dimentions");
-        }
+        validDimentions();
 
         side = (2 * N + 1);
         mazeSize = side * side;
@@ -42,21 +40,19 @@ public:
     }
 
     void makeMaze() {
-        if (!validDimentions()) {
-            throw std::runtime_error("Invalid maze dimentions");
-        }
+        validDimentions();
 
         std::mt19937 gen(
             _seed.has_value() ? _seed.value() : std::random_device {} ()
         );
 
-        std::stack <std::pair <int, int>> cellStack;
-        cellStack.push({1, 1});
+        std::vector <std::pair <int, int>> cellStack;
+        cellStack.push_back({1, 1});
         maze[index(1, 1, side)] = 1;
         
         while (!cellStack.empty()) {
-            auto [row, col] = cellStack.top();
-            cellStack.pop();
+            auto [row, col] = cellStack.back();
+            cellStack.pop_back();
 
             maze[index(row, col, side)] = 1;
 
@@ -74,13 +70,13 @@ public:
                     continue;
                 }
 
-                cellStack.push({row, col});
+                cellStack.push_back({row, col});
 
                 int wall = index(row + direction.first / 2, col + direction.second / 2, side);
                 maze[wall] = 1;
 
                 maze[index(discoverRow, discoverCol, side)] = 1;
-                cellStack.push({discoverRow, discoverCol});
+                cellStack.push_back({discoverRow, discoverCol});
                 break;
             }
         }
@@ -98,10 +94,11 @@ public:
         }
     }
 
-    bool validDimentions() {
-        if (dimentions <= 0 || dimentions >= 256)
-            return false;
-        return true;
+    void validDimentions() {
+        if (dimentions <= 0)
+            throw std::runtime_error("Invalid maze dimentions: Maze dimentions less than 1");
+        else if (dimentions >= 256)
+            throw std::runtime_error("Invalid maze dimentions: Maze size too big (bigger than 255)");
     }
 
     // ==============================
@@ -115,15 +112,15 @@ public:
         return mazeSize;
     }
 
-    int getDimentions() {
+    uint8_t getDimentions() {
         return dimentions;
     }
 
-    std::vector <int> & getMaze() {
+    std::vector <uint8_t> & getMaze() {
         return maze;
     }
 
-    std::vector <std::pair <int, int>> 
+    std::vector <std::pair <int, int>>
         & getDirections() {
         return directions;
     }
