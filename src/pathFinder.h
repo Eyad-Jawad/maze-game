@@ -131,13 +131,15 @@ public:
         };
     }
 
-    void printBoard() {
+    void solveMaze() {
         auto solution = aStar();
         for (auto const & p : solution) {
             int idx = index(p, side);
             maze[idx] = 2;
         }
+    }
 
+    void printBoard() {
         for (int i = 0; i < side; i++) {
             for (int j = 0; j < side; j++) {
                 int idx = index(i, j, side);
@@ -151,5 +153,20 @@ public:
             }
             std::cout << '\n';
         }
+    }
+
+    // ==============================
+    //            GETTERS
+    // ==============================
+    pair getGoal() {
+        return goal;
+    }
+
+    std::vector <uint8_t> & getMaze() {
+        return maze;
+    }
+
+    int getSide() {
+        return side;
     }
 };
