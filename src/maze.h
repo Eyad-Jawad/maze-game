@@ -1,10 +1,9 @@
+#pragma once
+
 #include <algorithm>
-#include <cstdint>
-#include <cstdlib>
 #include <iostream>
 #include <optional>
 #include <random>
-#include <vector>
 
 inline int index(int row, int col, int N) { return row * N + col; }
 
@@ -111,7 +110,7 @@ public:
         return mazeSize;
     }
 
-    uint8_t getDimentions() {
+    int getDimentions() {
         return dimentions;
     }
 

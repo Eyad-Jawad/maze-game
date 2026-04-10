@@ -1,11 +1,14 @@
 /*
     Add comments,
     and logs.
+
+    check emscripten
     --Eyad
 */
 #include <stdexcept>
 #include <string>
 #include "maze.h"
+#include "pathFinder.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -14,11 +17,15 @@ int main(int argc, char *argv[]) {
     }
 
     int N = std::stoi(argv[1]); // turn the arg of mazedims into an int
-    mazeGrid maze = mazeGrid(N);
-    maze.makeMaze();
+    mazeGrid mazeGenerator = mazeGrid(N);
 
-    maze.printMaze();
+    mazeGenerator.makeMaze();
+    mazeGenerator.printMaze();
+
+    std::cout << "\n\n";
+
+    pathFinder mazeSolver = pathFinder(mazeGenerator);
+    mazeSolver.printBoard();
     
     return 0;
 }
-
