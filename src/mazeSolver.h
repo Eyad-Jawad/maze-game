@@ -1,6 +1,6 @@
 #pragma once
 
-#include "maze.h"
+#include "mazeGenerator.h"
 #include <map>
 #include <queue>
 

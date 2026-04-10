@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "maze.h"
-#include "pathFinder.h"
+#include "mazeGenerator.h"
+#include "mazeSolver.h"
 
 class testingMaze : public ::testing::TestWithParam<int> {};
 class testingInvalidMaze : public ::testing::TestWithParam<int> {};

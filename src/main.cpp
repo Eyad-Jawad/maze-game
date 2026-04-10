@@ -8,8 +8,8 @@
 #include <fstream>
 #include <stdexcept>
 #include <string>
-#include "maze.h"
-#include "pathFinder.h"
+#include "mazeGenerator.h"
+#include "mazeSolver.h"
 
 void savePPM(const std::vector <uint8_t> & maze, int side);
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
 }
 
 void savePPM(const std::vector <uint8_t> & maze, int side) {
-    std::ofstream mazeImage("mazeImage.ppm", std::ios::binary);
+    std::ofstream mazeImage("./mazeImage.ppm", std::ios::binary);
 
     mazeImage << "P6\n" << side << ' ' << side << "\n255\n";
 
