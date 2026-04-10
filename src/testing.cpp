@@ -20,10 +20,10 @@ TEST_P(testingMaze, testSize) {
     EXPECT_EQ(m.getMazeSize(), side * side);
 }
 
-TEST_P(testingMaze, testDimentions) {
+TEST_P(testingMaze, testDimensions) {
     int N = GetParam();
     mazeGrid m(N);
-    EXPECT_EQ(m.getDimentions(), N);
+    EXPECT_EQ(m.getDimensions(), N);
 }
 
 TEST(testingMaze, testMazeValues) {
@@ -39,7 +39,7 @@ TEST(testingMaze, testMazeValues) {
     }
 }
 
-TEST_P(testingInvalidMaze, testInvalidDimentions) {
+TEST_P(testingInvalidMaze, testInvalidDimensions) {
     int invalidN = GetParam();
     EXPECT_THROW(
         {

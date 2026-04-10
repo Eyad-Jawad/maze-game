@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     }
 
     int N = std::stoi(argv[1]); // turn the arg of mazedims into an int
-    mazeGrid mazeGenerator = mazeGrid(N);
+    mazeGrid mazeGenerator = mazeGrid(N); // pass the dimensions
     mazeGenerator.makeMaze();
 
     pathFinder mazeSolver = pathFinder(mazeGenerator);

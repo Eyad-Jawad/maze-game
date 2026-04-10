@@ -11,7 +11,7 @@ class mazeGrid {
 private:
     int side;
     int mazeSize;
-    int dimentions;
+    int dimensions;
     std::optional <int> _seed;
 
     std::vector <uint8_t> maze;
@@ -19,10 +19,10 @@ private:
 
 public:
     mazeGrid(int N) {
-        dimentions = N;
-        validDimentions();
+        dimensions = N;
+        validDimensions();
 
-        side = (2 * N + 1);
+        side = (2 * N + 1); // couting the walls
         mazeSize = side * side;
         
         maze.assign(mazeSize, 0);
@@ -34,12 +34,15 @@ public:
             {-2, 0}  // down
         };
 
-        _seed = std::nullopt;
+        _seed = std::nullopt; // for seedded mazes (testing)
     }
 
     void makeMaze() {
-        validDimentions();
+        validDimensions(); // raise an error if they are not valid
 
+        // ==============================
+        //         INITIALIZATION        
+        // ==============================
         std::mt19937 gen(
             _seed.has_value() ? _seed.value() : std::random_device {} ()
         );
@@ -48,14 +51,16 @@ public:
         cellStack.push_back({1, 1});
         maze[index(1, 1, side)] = 1;
         
+        // ==============================
+        //         MAZE GENERATION       
+        // ==============================
         while (!cellStack.empty()) {
             auto [row, col] = cellStack.back();
             cellStack.pop_back();
 
-            maze[index(row, col, side)] = 1;
-
             std::shuffle(directions.begin(), directions.end(), gen);
 
+            // choose a random direction from your current cell
             for (auto & direction : directions) {
                 int discoverRow = row + direction.first;
                 int discoverCol = col + direction.second;
@@ -68,11 +73,13 @@ public:
                     continue;
                 }
 
-                cellStack.push_back({row, col});
+                cellStack.push_back({row, col}); 
 
+                // collapse the wall between your current cell and this cell
                 int wall = index(row + direction.first / 2, col + direction.second / 2, side);
                 maze[wall] = 1;
 
+                // mark this cell as visited (path)
                 maze[index(discoverRow, discoverCol, side)] = 1;
                 cellStack.push_back({discoverRow, discoverCol});
                 break;
@@ -92,11 +99,11 @@ public:
         }
     }
 
-    void validDimentions() {
-        if (dimentions <= 0)
-            throw std::runtime_error("Invalid maze dimentions: Maze dimentions less than 1");
-        else if (dimentions >= 256)
-            throw std::runtime_error("Invalid maze dimentions: Maze size too big (bigger than 255)");
+    void validDimensions() {
+        if (dimensions <= 0)
+            throw std::runtime_error("Invalid maze dimensions: Maze dimensions less than 1");
+        else if (dimensions >= 256)
+            throw std::runtime_error("Invalid maze dimensions: Maze size too big (bigger than 255)");
     }
 
     // ==============================
@@ -110,8 +117,8 @@ public:
         return mazeSize;
     }
 
-    int getDimentions() {
-        return dimentions;
+    int getDimensions() {
+        return dimensions;
     }
 
     std::vector <uint8_t> & getMaze() {

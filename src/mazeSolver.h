@@ -7,6 +7,7 @@
 struct pair {
     int x, y;
 
+    // for the map
     bool operator < (const pair & other) const {
         return std::tie(x, y) < std::tie(other.x, other.y);
     }
@@ -14,7 +15,6 @@ struct pair {
     bool operator == (const pair & other) const {
         return x == other.x && y == other.y;
     }
-
 };
 
 inline int index(pair cell, int N) { return cell.y * N + cell.x; }
@@ -36,10 +36,12 @@ private:
             std::vector <pair> path = {current};
             keys.reserve(cameFrom.size());
 
-            for (auto & e : cameFrom) {
+            // make a vector of keys
+            for (auto const & e : cameFrom) {
                 keys.push_back(e.first);
             }
 
+            // while there's a cell this one comes from, make the path
             while (std::find(
                     keys.begin(), 
                     keys.end(), 
@@ -58,7 +60,9 @@ private:
         }
 
         std::vector <pair> aStar () {
-
+            // ==============================
+            //         INITIALIZATION        
+            // ==============================
             std::map <pair, pair> cameFrom;
             std::map <pair, int> currentCost;
             std::map <pair, int> expectedCost;
@@ -80,6 +84,9 @@ private:
             currentCost[start] = 0;
             expectedCost[start] = heuristic(start);
 
+            // ==============================
+            //         MAZE SOLVING          
+            // ==============================
             while (!openSet.empty()) {
                 pair current = openSet.top();
                 if (current == goal) {
@@ -93,10 +100,9 @@ private:
                     discoverCell.y = current.y + y;
 
                     if (discoverCell.x < 0 || discoverCell.x >= side || 
-                        discoverCell.y < 0 || discoverCell.y >= side) 
+                        discoverCell.y < 0 || discoverCell.y >= side ||
+                        !maze[index(discoverCell, side)]) 
                         continue;
-
-                    if(!maze.at(index(discoverCell, side))) continue;
 
                     int score = currentCost[current] + 1;
 
