@@ -50,5 +50,5 @@ g++ testing.cpp -O2 -march=native -lgtest -pthread -o test.exe
 ```
 
 ## Benchmarks
-It takes `517 ms` to generate and solve a 255-by-255 maze (the maximum size)  
-Or it takes `5626 ms` to generate and solve 10 255-by-255 mazes, on my machine.  
+It takes `20 ms` to generate and solve a 255-by-255 maze (the maximum size)  
+Or it takes `256 ms` to generate and solve 10 255-by-255 mazes, on my machine.  

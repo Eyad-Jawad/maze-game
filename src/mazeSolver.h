@@ -33,25 +33,17 @@ private:
             std::map <pair, pair> &cameFrom
         ) 
         {
-            std::vector <pair> keys;
             std::vector <pair> path = {current};
-            keys.reserve(cameFrom.size());
-
-            // make a vector of keys
-            for (auto const & e : cameFrom) {
-                keys.push_back(e.first);
-            }
+            path.reserve(side);
 
             // while there's a cell this one comes from, make the path
-            while (std::find(
-                    keys.begin(), 
-                    keys.end(), 
-                    current) != keys.end())
+            while (cameFrom.find(current) != cameFrom.end())
             {
                 current = cameFrom[current];
-                path.insert(path.begin(), current);
+                path.push_back(current);
             }
 
+            std::reverse(path.begin(), path.end());
             return path;
         }
 
