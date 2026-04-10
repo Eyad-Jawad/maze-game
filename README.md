@@ -2,9 +2,9 @@
 This is still in development!  
 Current Progress:  
 A 15-by-15 Maze:  
-![an image of a 15-by-15 solved maze](mazeImage15.jpg)
+![an image of a 15-by-15 solved maze](mazeImage15.jpg)  
 A 255-by-255 Maze:  
-![an image of a 255-by-255 solved maze](mazeImage255.jpg)
+![an image of a 255-by-255 solved maze](mazeImage255.jpg)  
 
 ## How To Run
 To compile this project you need to be in the src folder, and run:
