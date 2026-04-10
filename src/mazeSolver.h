@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits>
 #include "mazeGenerator.h"
 #include <map>
 #include <queue>
@@ -64,13 +65,13 @@ private:
             //         INITIALIZATION        
             // ==============================
             std::map <pair, pair> cameFrom;
-            std::map <pair, int> currentCost;
-            std::map <pair, int> expectedCost;
+            std::vector <int> currentCost (side * side, -1);
+            std::vector <int> expectedCost (side * side, std::numeric_limits <int>::max());
             
-            auto pqComp = [&expectedCost] (
+            auto pqComp = [&expectedCost, this] (
                 const pair & a, const pair & b
             ) {
-                return expectedCost[a] > expectedCost[b];
+                return expectedCost[index(a, side)] > expectedCost[index(b, side)];
             };
 
             std::priority_queue <
@@ -81,8 +82,8 @@ private:
             pair start;
             start.x = start.y = 1;
             openSet.push(start);
-            currentCost[start] = 0;
-            expectedCost[start] = heuristic(start);
+            currentCost[index(start, side)] = 0;
+            expectedCost[index(start, side)] = heuristic(start);
 
             // ==============================
             //         MAZE SOLVING          
@@ -104,18 +105,18 @@ private:
                         !maze[index(discoverCell, side)]) 
                         continue;
 
-                    int score = currentCost[current] + 1;
+                    int score = currentCost[index(current, side)] + 1;
 
-                    auto it = currentCost.find(discoverCell);
+                    int it = currentCost[index(discoverCell, side)];
                     int discoverCost = (
-                        it != currentCost.end()) 
-                        ? it->second : 
-                        std::numeric_limits <int>::max();
+                        it != -1
+                        ? it : 
+                        std::numeric_limits <int>::max());
 
                     if (score < discoverCost) {
                        cameFrom[discoverCell] = current;
-                       currentCost[discoverCell] = score;
-                       expectedCost[discoverCell] = currentCost[discoverCell] + heuristic(discoverCell);
+                       currentCost[index(discoverCell, side)] = score;
+                       expectedCost[index(discoverCell, side)] = currentCost[index(discoverCell, side)] + heuristic(discoverCell);
 
                         openSet.push(discoverCell);
                     }

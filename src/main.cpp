@@ -1,7 +1,5 @@
 /*
-    Add comments,
-    and logs.
-
+    Add logs.
     check emscripten
     --Eyad
 */
