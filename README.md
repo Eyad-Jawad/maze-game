@@ -36,7 +36,7 @@ I'm aiming to make a 3D game-like setup for this project using WASM and JS, curr
 ## Tests
 I have included many tests:  
 -Tests for variables  
--Tests using a seedded pre-generated maze from a working version to compare against to know if the generation failed  
+-Tests using a seeded pre-generated maze from a working version to compare against to know if the generation failed  
 -Tests for invalid inputs  
 -Tests for valid mazes (by solving them)  
 -Tests for the maze solver  
@@ -50,5 +50,5 @@ g++ testing.cpp -O2 -march=native -lgtest -pthread -o test.exe
 ```
 
 ## Benchmarks
-It takes `20 ms` to generate and solve a 255-by-255 maze (the maximum size)  
-Or it takes `256 ms` to generate and solve 10 255-by-255 mazes, on my machine.  
+It takes `15 ms` to generate and solve a 255-by-255 maze (the maximum size)  
+Or it takes `150 ms` to generate and solve 10 255-by-255 mazes, on my machine.  
