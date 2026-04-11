@@ -24,7 +24,7 @@ class pathFinder {
 private:
     int side;
     pair goal;
-    std::vector <uint8_t> maze;
+    std::vector <uint8_t> & maze;
     static constexpr std::pair <int, int> directions[] = {
             {0, 1},  // right
             {0, -1}, // left
@@ -36,7 +36,7 @@ private:
         reconstructPath (
             int side,
             int current, 
-            std::vector <int> &cameFrom
+            std::vector <int> & cameFrom
         ) 
         {
             std::vector <int> path = {current};
@@ -124,8 +124,7 @@ private:
         }
     
 public:
-    pathFinder(mazeGrid & m) {
-        maze = m.getMaze();
+    pathFinder(mazeGrid & m) : maze(m.getMaze()) {
         side = m.getSide();
         goal.x = goal.y = side - 2;
     }
