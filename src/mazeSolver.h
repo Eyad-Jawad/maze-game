@@ -32,11 +32,15 @@ private:
             {-1, 0}  // down
         };
 
+        static constexpr int MAX_SIZE = (2 * 255 + 1) * (2 * 255 + 1);
+
+        int cameFrom[MAX_SIZE];
+        int currentCost[MAX_SIZE];
+        int expectedCost[MAX_SIZE];
+
     std::vector <int> 
         reconstructPath (
-            int side,
-            int current, 
-            std::vector <int> & cameFrom
+            int current
         ) 
         {
             std::vector <int> path = {current};
@@ -62,11 +66,14 @@ private:
             // ==============================
             //         INITIALIZATION        
             // ==============================
-            std::vector <int> cameFrom (side * side, -1);
-            std::vector <int> currentCost (side * side, -1);
-            std::vector <int> expectedCost (side * side, std::numeric_limits <int>::max());
             
-            auto pqComp = [&expectedCost, this] (
+            for (int i = 0; i < MAX_SIZE; i++) {
+                cameFrom[i] = -1;
+                currentCost[i] = -1;
+                expectedCost[i] = std::numeric_limits <int>::max();
+            }
+
+            auto pqComp = [this] (
                 const pair & a, const pair & b
             ) {
                 return expectedCost[index(a, side)] > expectedCost[index(b, side)];
@@ -89,7 +96,7 @@ private:
             while (!openSet.empty()) {
                 pair current = openSet.top();
                 if (current == goal) {
-                    return reconstructPath(side, index(current, side), cameFrom);
+                    return reconstructPath(index(current, side));
                 }
 
                 openSet.pop();
