@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <array>
 #include <iostream>
 #include <optional>
 #include <random>
@@ -15,7 +16,12 @@ private:
     std::optional <int> _seed;
 
     std::vector <uint8_t> maze;
-    std::vector <std::pair <int, int>> directions;
+    static constexpr std::pair <int, int> directions[] = {
+            {0, 2},  // right
+            {0, -2}, // left
+            {2, 0},  // up
+            {-2, 0}  // down
+        };
 
 public:
     mazeGrid(int N) {
@@ -26,13 +32,6 @@ public:
         mazeSize = side * side;
         
         maze.assign(mazeSize, 0);
-
-        directions = {
-            {0, 2},  // right
-            {0, -2}, // left
-            {2, 0},  // up
-            {-2, 0}  // down
-        };
 
         _seed = std::nullopt; // for seedded mazes (testing)
     }
@@ -46,6 +45,7 @@ public:
         std::mt19937 gen(
             _seed.has_value() ? _seed.value() : std::random_device {} ()
         );
+        std::array <int, 4> directionsIdx = {0, 1, 2, 3};
 
         std::vector <std::pair <int, int>> cellStack;
         cellStack.push_back({1, 1});
@@ -58,10 +58,11 @@ public:
             auto [row, col] = cellStack.back();
             cellStack.pop_back();
 
-            std::shuffle(directions.begin(), directions.end(), gen);
+            std::shuffle(directionsIdx.begin(), directionsIdx.end(), gen);
 
             // choose a random direction from your current cell
-            for (auto & direction : directions) {
+            for (auto & i : directionsIdx) {
+                auto & direction = directions[i];
                 int discoverRow = row + direction.first;
                 int discoverCol = col + direction.second;
 
@@ -123,11 +124,6 @@ public:
 
     std::vector <uint8_t> & getMaze() {
         return maze;
-    }
-
-    std::vector <std::pair <int, int>>
-        & getDirections() {
-        return directions;
     }
 
     // ==============================
