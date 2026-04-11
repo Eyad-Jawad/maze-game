@@ -94,13 +94,12 @@ TEST_P(testingMazeSolver, testGoal) {
 
     int side = 2 * N + 1;
     pathFinder s(m);
-    pair g;
-    g.x = g.y = side - 2;
+    int g = index(side - 2, side - 2, side);
 
     EXPECT_EQ(g, s.getGoal());
 }
 
-TEST(testingMazeSolver, testSolvingSeedeed) {
+TEST(testingMazeSolver, testSolvingSeeded) {
     std::vector <uint8_t> mazeDimTwoSeedZero = {0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 2, 0, 0, 1, 1, 2, 0, 0, 0, 0, 0, 0};
 
     mazeGrid m(2);

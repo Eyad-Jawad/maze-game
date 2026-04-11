@@ -5,25 +5,10 @@
 #include <map>
 #include <queue>
 
-struct pair {
-    int x, y;
-
-    // for the map
-    bool operator < (const pair & other) const {
-        return std::tie(x, y) < std::tie(other.x, other.y);
-    }
-
-    bool operator == (const pair & other) const {
-        return x == other.x && y == other.y;
-    }
-};
-
-inline int index(pair cell, int N) { return cell.y * N + cell.x; }
-
 class pathFinder {
 private:
     int side;
-    pair goal;
+    int goal;
     std::vector <uint8_t> & maze;
     static constexpr std::pair <int, int> directions[] = {
             {0, 1},  // right
@@ -57,9 +42,9 @@ private:
             return path;
         }
 
-        int heuristic (pair current) {
-            return abs(current.x - goal.x) +
-                   abs(current.y - goal.y);
+        int heuristic (int row, int col) {
+            return abs(row - (side - 2)) +
+                   abs(col - (side - 2));
         }
 
         std::vector <int> aStar () {
@@ -74,58 +59,59 @@ private:
             }
 
             auto pqComp = [this] (
-                const pair & a, const pair & b
+                const int & a, const int & b
             ) {
-                return expectedCost[index(a, side)] > expectedCost[index(b, side)];
+                return expectedCost[a] > expectedCost[b];
             };
 
             std::priority_queue <
-                pair, std::vector <pair>, 
+                int,
+                std::vector <int>, 
                 decltype(pqComp)
             > openSet(pqComp);
 
-            pair start;
-            start.x = start.y = 1;
-            openSet.push(start);
-            currentCost[index(start, side)] = 0;
-            expectedCost[index(start, side)] = heuristic(start);
+            int startRow = 1;
+            int startCol = 1;
+            int startIdx = index(startRow, startCol, side);
+            openSet.push(startIdx);
+            currentCost[startIdx] = 0;
+            expectedCost[startIdx] = heuristic(startRow, startCol);
 
             // ==============================
             //         MAZE SOLVING          
             // ==============================
             while (!openSet.empty()) {
-                pair current = openSet.top();
-                if (current == goal) {
-                    return reconstructPath(index(current, side));
+                if (openSet.top() == goal) {
+                    return reconstructPath(openSet.top());
                 }
 
-                openSet.pop();
                 for (auto & [y, x] : directions) {
-                    pair discoverCell;
-                    discoverCell.x = current.x + x;
-                    discoverCell.y = current.y + y;
+                    int discoverRow = openSet.top() / side + y;
+                    int discoverCol = openSet.top() % side + x;
+                    int discoverIdx = index(discoverRow, discoverCol, side);
 
-                    if (discoverCell.x < 0 || discoverCell.x >= side || 
-                        discoverCell.y < 0 || discoverCell.y >= side ||
-                        !maze[index(discoverCell, side)]) 
+                    if (discoverCol < 0 || discoverCol >= side || 
+                        discoverRow < 0 || discoverRow >= side ||
+                        !maze[discoverIdx]) 
                         continue;
 
-                    int score = currentCost[index(current, side)] + 1;
+                    int score = currentCost[openSet.top()] + 1;
 
-                    int it = currentCost[index(discoverCell, side)];
+                    int it = currentCost[discoverIdx];
                     int discoverCost = (
                         it != -1
                         ? it : 
                         std::numeric_limits <int>::max());
 
                     if (score < discoverCost) {
-                       cameFrom[index(discoverCell, side)] = index(current, side);
-                       currentCost[index(discoverCell, side)] = score;
-                       expectedCost[index(discoverCell, side)] = currentCost[index(discoverCell, side)] + heuristic(discoverCell);
+                       cameFrom[discoverIdx] = openSet.top();
+                       currentCost[discoverIdx] = score;
+                       expectedCost[discoverIdx] = currentCost[discoverIdx] + heuristic(discoverRow, discoverCol);
 
-                        openSet.push(discoverCell);
+                        openSet.push(discoverIdx);
                     }
                 }
+                openSet.pop();
             }
             return {};
         }
@@ -133,7 +119,7 @@ private:
 public:
     pathFinder(mazeGrid & m) : maze(m.getMaze()) {
         side = m.getSide();
-        goal.x = goal.y = side - 2;
+        goal = index(side - 2, side - 2, side);
     }
 
     void solveMaze() {
@@ -158,11 +144,10 @@ public:
             std::cout << '\n';
         }
     }
-
     // ==============================
     //            GETTERS
     // ==============================
-    pair getGoal() {
+    int getGoal() {
         return goal;
     }
 
