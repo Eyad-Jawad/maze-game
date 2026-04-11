@@ -25,7 +25,12 @@ private:
     int side;
     pair goal;
     std::vector <uint8_t> maze;
-    std::vector <std::pair <int, int>> directions;
+    static constexpr std::pair <int, int> directions[] = {
+            {0, 1},  // right
+            {0, -1}, // left
+            {1, 0},  // up
+            {-1, 0}  // down
+        };
 
     std::vector <int> 
         reconstructPath (
@@ -119,16 +124,10 @@ private:
         }
     
 public:
-    pathFinder(mazeGrid &m) {
+    pathFinder(mazeGrid & m) {
         maze = m.getMaze();
         side = m.getSide();
         goal.x = goal.y = side - 2;
-        directions = {
-            {0, 1},  // right
-            {0, -1}, // left
-            {1, 0},  // up
-            {-1, 0}  // down
-        };
     }
 
     void solveMaze() {
