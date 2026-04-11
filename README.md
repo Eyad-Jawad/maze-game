@@ -33,6 +33,11 @@ I also included a helper function that makes a PPM images that generates images 
 ## The Project's Scope
 I'm aiming to make a 3D game-like setup for this project using WASM and JS, currently, I'm polishing the maze generation & solving code.
 
+## Benchmarks
+It takes `15 ms` to generate and solve a 255-by-255 maze (the maximum size)  
+Or it takes `150 ms` to generate and solve 10 255-by-255 mazes, on my machine.  
+
+
 ## Tests
 I have included many tests:  
 -Tests for variables  
@@ -40,7 +45,7 @@ I have included many tests:
 -Tests for invalid inputs  
 -Tests for valid mazes (by solving them)  
 -Tests for the maze solver  
-To run the test:  
+To run the test, you must first install the GTest dependency, and then run:  
 
 ```
 
@@ -48,7 +53,4 @@ g++ testing.cpp -O2 -march=native -lgtest -pthread -o test.exe
 ./test.exe
 
 ```
-
-## Benchmarks
-It takes `15 ms` to generate and solve a 255-by-255 maze (the maximum size)  
-Or it takes `150 ms` to generate and solve 10 255-by-255 mazes, on my machine.  
+I also tested it with Valgrind, there were `0` errors, and `0` leaks.
