@@ -67,7 +67,7 @@ private:
             //         INITIALIZATION        
             // ==============================
             
-            for (int i = 0; i < MAX_SIZE; i++) {
+            for (int i = 0, size = side * side; i < size; i++) {
                 cameFrom[i] = -1;
                 currentCost[i] = -1;
                 expectedCost[i] = std::numeric_limits <int>::max();
