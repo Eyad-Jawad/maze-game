@@ -27,17 +27,18 @@ private:
     std::vector <uint8_t> maze;
     std::vector <std::pair <int, int>> directions;
 
-    std::vector <pair> 
+    std::vector <int> 
         reconstructPath (
-            pair &current, 
-            std::map <pair, pair> &cameFrom
+            int side,
+            int current, 
+            std::vector <int> &cameFrom
         ) 
         {
-            std::vector <pair> path = {current};
+            std::vector <int> path = {current};
             path.reserve(side);
 
-            // while there's a cell this one comes from, make the path
-            while (cameFrom.find(current) != cameFrom.end())
+            // while there's a cell that this one comes from, make the path
+            while (cameFrom[current] != -1)
             {
                 current = cameFrom[current];
                 path.push_back(current);
@@ -52,11 +53,11 @@ private:
                    abs(current.y - goal.y);
         }
 
-        std::vector <pair> aStar () {
+        std::vector <int> aStar () {
             // ==============================
             //         INITIALIZATION        
             // ==============================
-            std::map <pair, pair> cameFrom;
+            std::vector <int> cameFrom (side * side, -1);
             std::vector <int> currentCost (side * side, -1);
             std::vector <int> expectedCost (side * side, std::numeric_limits <int>::max());
             
@@ -83,7 +84,7 @@ private:
             while (!openSet.empty()) {
                 pair current = openSet.top();
                 if (current == goal) {
-                    return reconstructPath(current, cameFrom);
+                    return reconstructPath(side, index(current, side), cameFrom);
                 }
 
                 openSet.pop();
@@ -106,7 +107,7 @@ private:
                         std::numeric_limits <int>::max());
 
                     if (score < discoverCost) {
-                       cameFrom[discoverCell] = current;
+                       cameFrom[index(discoverCell, side)] = index(current, side);
                        currentCost[index(discoverCell, side)] = score;
                        expectedCost[index(discoverCell, side)] = currentCost[index(discoverCell, side)] + heuristic(discoverCell);
 
@@ -131,10 +132,9 @@ public:
     }
 
     void solveMaze() {
-        auto solution = aStar();
-        for (auto const & p : solution) {
-            int idx = index(p, side);
-            maze[idx] = 2;
+        std::vector <int> solution = aStar();
+        for (auto const & i : solution) {
+            maze[i] = 2;
         }
     }
 
