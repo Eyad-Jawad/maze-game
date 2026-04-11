@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     pathFinder mazeSolver = pathFinder(mazeGenerator);
     mazeSolver.solveMaze();
 
-    // savePPM(mazeSolver.getMaze(), mazeSolver.getSide());
+    savePPM(mazeSolver.getMaze(), mazeSolver.getSide());
     
     return 0;
 }
