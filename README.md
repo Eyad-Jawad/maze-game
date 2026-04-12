@@ -54,3 +54,19 @@ g++ testing.cpp -O2 -march=native -lgtest -pthread -o test.exe
 
 ```
 I also tested it with Valgrind, there were `0` errors, and `0` leaks.
+
+## WASM
+To compile the code to WASM or JS run this inside project folder:
+
+```
+
+emcc game/wasmLayer.cpp \
+-Imaze -O3 \
+-o game/maze.js \
+-s MODULARIZE=1 \
+-s EXPORT_ES6=1 \
+-s EXPORTED_FUNCTIONS="['_run','_size']" \
+-s EXPORTED_RUNTIME_METHODS="['HEAPU8']"
+
+```
+however, know that you must have emscripten installed on your computer.
