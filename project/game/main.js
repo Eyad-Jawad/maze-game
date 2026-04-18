@@ -99,7 +99,6 @@ const getCellsPositions = (maze2D, blockSize) => {
     return maze3D.flat(Infinity);
 }
 
-
 const maze = getCellsPositions(maze2D, 1);
 const vertexCount = maze.length / 3;
 
@@ -134,11 +133,11 @@ gl.shaderSource(vertexShader, `
     void main() {
         float f = 1.0;
 
-        vec3 camera = vec3(0.5, 0.5, -2.0);
+        vec3 camera = vec3(0.5, 1.5, -0.5);
 
         vec3 pos = position - camera;
 
-        float z = pos.z - 1.0;
+        float z = pos.z;
         depth = z;
 
         vec3 projected;
@@ -177,7 +176,6 @@ gl.useProgram(program);
 gl.enableVertexAttribArray(positionLocation);
 gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
-
 
 gl.clearColor(0, 0, 0, 1);
 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
