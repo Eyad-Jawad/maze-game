@@ -1,17 +1,17 @@
 import createMazeModule from "./maze.js";
 
-const Module = await createMazeModule();
+async function createMazeInfo(blockSize) {
+    const Module = await createMazeModule();
+    
+    const ptr = Module._run(5);
+    const mazeSize = Module._size(5);
+    const maze2D = new Uint8Array(Module.HEAPU8.buffer, ptr, mazeSize);
+    
+    const index = (row, col, N) => { return row * N + col; }
 
-const ptr = Module._run(5);
-const mazeSize = Module._size(5);
-const maze2D = new Uint8Array(Module.HEAPU8.buffer, ptr, mazeSize);
-
-const index = (row, col, N) => { return row * N + col; }
-
-const getCellsPositions = (maze2D, blockSize) => {
-    const side = Math.sqrt(maze2D.length);
-
-    const scale = 1 / (side * blockSize);
+    let side = Math.sqrt(mazeSize);
+    
+    const scale = 1 / (side * blockSize) + 0.5;
 
     let maze3D = [];
 
@@ -99,8 +99,9 @@ const getCellsPositions = (maze2D, blockSize) => {
     return maze3D.flat(Infinity);
 }
 
-const maze = getCellsPositions(maze2D, 1);
-const vertexCount = maze.length / 3;
+let maze;
+let vertexCount;
+let cameraPositions = [0.5, 1.0, -0.5];
 
 const canvas = document.querySelector("canvas");
 const gl = canvas.getContext("webgl");
@@ -110,77 +111,87 @@ if (!gl) {
 }
 
 gl.enable(gl.DEPTH_TEST);
-// gl.disable(gl.DEPTH_TEST);
-
-// canvas.width = canvas.clientWidth;
-// canvas.height = canvas.clientHeight;
-
 canvas.width = 1920;
 canvas.height = 880;
 
 gl.viewport(0, 0, canvas.width, canvas.height);
 
-const buffer = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(maze), gl.STATIC_DRAW);
+function createMaze(maze, cameraPositions) {
+    const buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(maze), gl.DYNAMIC_DRAW);
+    
+    const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    
+    gl.shaderSource(vertexShader, `
+        attribute vec3 position;
+        uniform vec3 camera;
+        varying float depth;
+    
+        void main() {
+            float f = 1.0;
+            vec3 pos = position - camera;    
+        
+            depth = sqrt(pos.x * pos.x + pos.z * pos.z);
+            gl_Position = vec4(pos.x * f, pos.y * f, pos.z - 0.2, pos.z);
+        }
+    `);
+    
+    gl.compileShader(vertexShader);
+    
+    const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fragmentShader, `
+        precision mediump float;
+    
+        varying float depth;
+    
+        void main() {
+            float brightness = 1.0 / (1.0 + depth * 0.8);
+            gl_FragColor = vec4(brightness, brightness, brightness, 1);
+        }
+    `);
+    
+    gl.compileShader(fragmentShader);
+    
+    const program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    
+    const positionLocation = gl.getAttribLocation(program, `position`);
+    gl.useProgram(program);
+    gl.enableVertexAttribArray(positionLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
 
-const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    const cameraLocation = gl.getUniformLocation(program, `camera`);
+    gl.uniform3fv(cameraLocation, new Float32Array(cameraPositions));
 
-gl.shaderSource(vertexShader, `
-    attribute vec3 position;
-    varying float depth;
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
+    
+    console.log(gl.getShaderInfoLog(vertexShader));
+    console.log(gl.getShaderInfoLog(fragmentShader));
+    console.log(gl.getProgramInfoLog(program));
+}
 
-    void main() {
-        float f = 1.0;
-
-        vec3 camera = vec3(0.5, 1.5, -0.5);
-
-        vec3 pos = position - camera;
-
-        float z = pos.z;
-        depth = z;
-
-        vec3 projected;
-        projected.x = (f * pos.x) / z;
-        projected.y = (f * pos.y) / z;
-        projected.z = z * 0.1;
-        gl_Position = vec4(projected, 1.0);
-    }
-`);
-
-gl.compileShader(vertexShader);
-
-const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-gl.shaderSource(fragmentShader, `
-    precision mediump float;
-
-    varying float depth;
-
-    void main() {
-
-        float brightness = 1.0 / (1.0 + depth * 0.8);
-        gl_FragColor = vec4(brightness, brightness, brightness, 1);
-    }
-`);
-
-gl.compileShader(fragmentShader);
-
-const program = gl.createProgram();
-gl.attachShader(program, vertexShader);
-gl.attachShader(program, fragmentShader);
-gl.linkProgram(program);
-
-const positionLocation = gl.getAttribLocation(program, `position`);
-
-gl.useProgram(program);
-gl.enableVertexAttribArray(positionLocation);
-gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
-
-gl.clearColor(0, 0, 0, 1);
-gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-gl.drawArrays(gl.TRIANGLES, 0, vertexCount);
-
-console.log(gl.getShaderInfoLog(vertexShader));
-console.log(gl.getShaderInfoLog(fragmentShader));
-console.log(gl.getProgramInfoLog(program));
+document.addEventListener("keydown", async (event) => {
+    if (event.key === "Enter") {
+        maze = await createMazeInfo(1);
+        vertexCount = maze.length / 3;
+        createMaze(maze, cameraPositions);
+    } else if (event.key === "ArrowRight") {
+        cameraPositions[0] += 0.03;
+        createMaze(maze, cameraPositions);
+    } else if (event.key === "ArrowLeft") {
+        cameraPositions[0] -= 0.03;
+        createMaze(maze, cameraPositions);
+    } else if (event.key === "ArrowUp") {
+        cameraPositions[2] += 0.03;
+        createMaze(maze, cameraPositions);
+    } else if (event.key === "ArrowDown") {
+        cameraPositions[2] -= 0.03;
+        createMaze(maze, cameraPositions);
+    } 
+});
