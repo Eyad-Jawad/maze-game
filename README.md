@@ -2,11 +2,11 @@
 This is still in development!  
 Current Progress:  
 A 10-by-10 3D Maze:  
-![a screenshot of a cyan 10-by-10 3D maze](3DMaze10)  
+![a screenshot of a cyan 10-by-10 3D maze](3DMaze10.jpg)  
 A 15-by-15 Maze:  
 ![an image of a 15-by-15 solved maze](mazeImage15.jpg)  
 A 100-by-100 3D Maze:  
-![a screenshot of a cyan 100-by-100 3D maze](3DMaze100)  
+![a screenshot of a cyan 100-by-100 3D maze](3DMaze100.jpg)  
 A 255-by-255 Maze:  
 ![an image of a 255-by-255 solved maze](mazeImage255.jpg)  
 
