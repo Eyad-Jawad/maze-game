@@ -1,6 +1,9 @@
 {
-    "name" : "maze-game",
+    "name": "maze-game",
     "version": "1.0.0",
     "main": "main.js",
-    "type": "module"
+    "type": "module",
+    "dependencies": {
+        "gl-matrix": "^3.4.4"
+    }
 }

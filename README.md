@@ -1,8 +1,12 @@
 # maze-game
 This is still in development!  
 Current Progress:  
+A 10-by-10 3D Maze:  
+![a screenshot of a cyan 10-by-10 3D maze](3DMaze10)  
 A 15-by-15 Maze:  
 ![an image of a 15-by-15 solved maze](mazeImage15.jpg)  
+A 100-by-100 3D Maze:  
+![a screenshot of a cyan 100-by-100 3D maze](3DMaze100)  
 A 255-by-255 Maze:  
 ![an image of a 255-by-255 solved maze](mazeImage255.jpg)  
 
@@ -31,7 +35,7 @@ I chose both functions for their simplicity and efficiency, because maze generat
 I also included a helper function that makes a PPM images that generates images of the mazes.
 
 ## The Project's Scope
-I'm aiming to make a 3D game-like setup for this project using WASM and JS, currently, I'm polishing the maze generation & solving code.
+Right now the project is conceptually done, adding more features or smoothing out the edges is not within my goals.
 
 ## Benchmarks
 It takes `15 ms` to generate and solve a 255-by-255 maze (the maximum size)  

@@ -4,8 +4,8 @@ import {mat4, vec3} from './node_modules/gl-matrix/esm/index.js'
 async function createMazeInfo(blockSize) {
     const Module = await createMazeModule();
     
-    const ptr = Module._run(5);
-    const mazeSize = Module._size(5);
+    const ptr = Module._run(10);
+    const mazeSize = Module._size(10);
     const maze2D = new Uint8Array(Module.HEAPU8.buffer, ptr, mazeSize);
     
     const index = (row, col, N) => { return row * N + col; }
@@ -115,7 +115,7 @@ if (!gl) {
 
 gl.enable(gl.DEPTH_TEST);
 canvas.width = 1920;
-canvas.height = 880;
+canvas.height = 1080;
 
 gl.viewport(0, 0, canvas.width, canvas.height);
 
@@ -151,7 +151,7 @@ function createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forw
         varying float depth;
     
         void main() {
-            float brightness = 1.0 / (1.0 + depth * 0.8);
+            float brightness = 1.0 / (1.0 + depth * 0.8) + 0.3;
             gl_FragColor = vec4(0, brightness, brightness, 1);
         }
     `);
