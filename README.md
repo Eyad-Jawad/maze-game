@@ -36,7 +36,7 @@ I also included a helper function that makes a PPM images that generates images 
 
 ## The Project's Scope
 Right now the project is conceptually done, adding more features or smoothing out the edges is not within my goals.  
-To try the game go to (this website)[https://eyad-jawad.github.io/maze-game/game/], press `Enter` to generate a maze, and move freely a as you wish.
+To try the game go to [this website](https://eyad-jawad.github.io/maze-game/game/), press `Enter` to generate a maze, and move freely a as you wish.
 
 ## Benchmarks
 It takes `15 ms` to generate and solve a 255-by-255 maze (the maximum size)  
