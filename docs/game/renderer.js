@@ -160,9 +160,17 @@ class Renderer {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
         this.gl.drawArrays(this.gl.TRIANGLES, 0, this.vertexCount);
         
-        console.log(this.gl.getShaderInfoLog(this.vertexShader));
-        console.log(this.gl.getShaderInfoLog(this.fragmentShader));
-        console.log(this.gl.getProgramInfoLog(this.program));
+        if (
+            this.gl.getShaderInfoLog(this.vertexShader) ||
+            this.gl.getShaderInfoLog(this.fragmentShader) ||
+            this.gl.getProgramInfoLog(this.program)
+        ) {
+            console.log(
+                this.gl.getShaderInfoLog(this.vertexShader),
+                this.gl.getShaderInfoLog(this.fragmentShader),
+                this.gl.getProgramInfoLog(this.program)
+            );
+        }
     }
 }
 
