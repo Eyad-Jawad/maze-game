@@ -1,110 +1,13 @@
-import createMazeModule from "./maze.js";
-import {mat4, vec3} from './node_modules/gl-matrix/esm/index.js'
+import { mat4, vec3 } from './node_modules/gl-matrix/esm/index.js';
+import { MazeGenerator } from "./mazeObject.js";
 
-async function createMazeInfo(blockSize) {
-    const Module = await createMazeModule();
-    
-    const ptr = Module._run(10);
-    const mazeSize = Module._size(10);
-    const maze2D = new Uint8Array(Module.HEAPU8.buffer, ptr, mazeSize);
-    
-    const index = (row, col, N) => { return row * N + col; }
+const maze = new MazeGenerator();
+await maze.init();
 
-    let side = Math.sqrt(mazeSize);
-    
-    const scale = 1 / (side * blockSize) + 0.5;
-
-    let maze3D = [];
-
-    for(let y = 0; y < side; y++) {
-        for(let x = 0; x < side; x++) {
-
-            const startX = (x * blockSize) * scale;
-            const startY = (y * blockSize) * scale;
-            const endX   = (x * blockSize + blockSize) * scale;
-            const endY   = (y * blockSize + blockSize) * scale;
-
-            let left = [
-                [startX, 0,         startY], 
-                [endX,   0,         startY], 
-                [startX, blockSize, startY],
-
-                [endX,   0,         startY], 
-                [startX, blockSize, startY],
-                [endX,   blockSize, startY],
-            ];
-
-            let near = [
-                [startX, 0,         startY],
-                [startX, 0,         endY],
-                [startX, blockSize, startY],
-
-                [startX, 0,         endY],
-                [startX, blockSize, startY],                
-                [startX, blockSize, endY]
-            ];
-
-            let far = [
-                [endX, 0,         startY],
-                [endX, 0,         endY],
-                [endX, blockSize, startY],
-
-                [endX, 0,         endY],
-                [endX, blockSize, startY],                
-                [endX, blockSize, endY]
-            ]
-
-            let right = [
-                [startX, 0,         endY],
-                [endX,   0,         endY],
-                [startX, blockSize, endY],
-
-                [endX,   0,         endY],
-                [startX, blockSize, endY],
-                [endX,   blockSize, endY]
-            ];
-
-            let up = [
-                [startX, blockSize, startY],
-                [endX,   blockSize, startY],
-                [startX, blockSize, endY],
-
-                [endX,   blockSize, startY],
-                [startX, blockSize, endY],
-                [endX,   blockSize, endY]
-            ];
-
-            let down = [
-                [startX, 0, startY],
-                [endX,   0, startY],
-                [startX, 0, endY],
-
-                [endX,   0, startY],
-                [startX, 0, endY],                
-                [endX,   0, endY]
-            ];
-
-            if (maze2D[index(y, x, side)] === 1) {
-                maze3D.push(right);
-                maze3D.push(left);
-                maze3D.push(up);
-                maze3D.push(down);
-                maze3D.push(near);
-                maze3D.push(far);
-            }
-            else
-                maze3D.push(down);
-        }
-    }
-
-    return maze3D.flat(Infinity);
-}
-
-let maze;
 let vertexCount;
 let cameraPositions = vec3.fromValues(0.5, 1.0, -0.5);
 let cameraAngles = vec3.fromValues(0.0, 0.0, 0.0);
-//                 [pitch, roll, yaw]
+//                              [pitch, roll, yaw]
 
 const canvas = document.querySelector("canvas");
 const gl = canvas.getContext("webgl");
@@ -122,7 +25,7 @@ gl.viewport(0, 0, canvas.width, canvas.height);
 function createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward) {
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(maze), gl.DYNAMIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(maze.maze3D), gl.DYNAMIC_DRAW);
     
     const vertexShader = gl.createShader(gl.VERTEX_SHADER);
     
@@ -151,7 +54,7 @@ function createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forw
         varying float depth;
     
         void main() {
-            float brightness = 1.0 / (1.0 + depth * 0.8) + 0.3;
+            float brightness = 1.0 / (1.0 + depth * 0.8);
             gl_FragColor = vec4(0, brightness, brightness, 1);
         }
     `);
@@ -209,25 +112,29 @@ document.addEventListener("keydown", async (event) => {
     vec3.normalize(right, right);
 
     if (event.key === "Enter") {
-        maze = await createMazeInfo(1);
-        vertexCount = maze.length / 3;
+        maze.make3DMaze(1);
+        vertexCount = maze.maze3D.length / 3;
 
-        cameraPositions = vec3.fromValues(0.5, 1.0, -0.5);
+        cameraPositions = vec3.fromValues(0.9, 1.0, 0.9);
         
         cameraAngles = vec3.fromValues(0.0, 0.0, 0.0);
 
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "ArrowRight" || event.key === "d") {
         vec3.scaleAndAdd(cameraPositions, cameraPositions, right, speed);
+        cameraPositions[1] = 1.0;
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "ArrowLeft" || event.key === "a") {
         vec3.scaleAndAdd(cameraPositions, cameraPositions, right, -speed);
+        cameraPositions[1] = 1.0;
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "ArrowUp" || event.key === "w") {
         vec3.scaleAndAdd(cameraPositions, cameraPositions, forward, speed);
+        cameraPositions[1] = 1.0;
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "ArrowDown" || event.key === "s") {
         vec3.scaleAndAdd(cameraPositions, cameraPositions, forward, -speed);
+        cameraPositions[1] = 1.0;
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "escape") {
         document.exitPointerLock();
@@ -254,6 +161,5 @@ document.addEventListener("mousemove", (event) => {
         cameraAngles[0] = Math.max(-maxPitch, Math.min(maxPitch, cameraAngles[0]));
 
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
-        console.log(cameraAngles);
     }
 });

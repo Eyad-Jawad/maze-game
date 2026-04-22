@@ -4,6 +4,7 @@
     "main": "main.js",
     "type": "module",
     "dependencies": {
-        "gl-matrix": "^3.4.4"
+        "gl-matrix": "^3.4.4",
+        "MazeObject": "1.0.0"
     }
 }
