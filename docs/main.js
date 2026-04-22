@@ -1,12 +1,15 @@
 import createMazeModule from "./maze.js";
 import {mat4, vec3} from './node_modules/gl-matrix/esm/index.js'
 
+let maze2DGlobal;
+
 async function createMazeInfo(blockSize) {
     const Module = await createMazeModule();
     
     const ptr = Module._run(10);
     const mazeSize = Module._size(10);
     const maze2D = new Uint8Array(Module.HEAPU8.buffer, ptr, mazeSize);
+    maze2DGlobal = maze2D;
     
     const index = (row, col, N) => { return row * N + col; }
 
@@ -96,7 +99,6 @@ async function createMazeInfo(blockSize) {
                 maze3D.push(down);
         }
     }
-
     return maze3D.flat(Infinity);
 }
 
@@ -104,7 +106,7 @@ let maze;
 let vertexCount;
 let cameraPositions = vec3.fromValues(0.5, 1.0, -0.5);
 let cameraAngles = vec3.fromValues(0.0, 0.0, 0.0);
-//                 [pitch, roll, yaw]
+//                              [pitch, roll, yaw]
 
 const canvas = document.querySelector("canvas");
 const gl = canvas.getContext("webgl");
@@ -219,15 +221,19 @@ document.addEventListener("keydown", async (event) => {
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "ArrowRight" || event.key === "d") {
         vec3.scaleAndAdd(cameraPositions, cameraPositions, right, speed);
+        cameraPositions[1] = 1.0;
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "ArrowLeft" || event.key === "a") {
         vec3.scaleAndAdd(cameraPositions, cameraPositions, right, -speed);
+        cameraPositions[1] = 1.0;
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "ArrowUp" || event.key === "w") {
         vec3.scaleAndAdd(cameraPositions, cameraPositions, forward, speed);
+        cameraPositions[1] = 1.0;
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "ArrowDown" || event.key === "s") {
         vec3.scaleAndAdd(cameraPositions, cameraPositions, forward, -speed);
+        cameraPositions[1] = 1.0;
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
     } else if (event.key === "escape") {
         document.exitPointerLock();
@@ -254,6 +260,5 @@ document.addEventListener("mousemove", (event) => {
         cameraAngles[0] = Math.max(-maxPitch, Math.min(maxPitch, cameraAngles[0]));
 
         createMaze(maze, cameraPositions, cameraAngles, perspectiveMatrix, forward);
-        console.log(cameraAngles);
     }
 });
