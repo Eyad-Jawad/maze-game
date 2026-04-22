@@ -18,7 +18,11 @@ class MazeGenerator {
     _make2DMaze() {
         const ptr = this.__Module._run(10);
         this._mazeSize = this.__Module._size(10);
-        this._maze2D = new Uint8Array(this.__Module.HEAPU8.buffer, ptr, this._mazeSize);
+        this._maze2D = new Uint8Array(
+            this.__Module.HEAPU8.buffer, 
+            ptr, 
+            this._mazeSize
+        );
         this._side = Math.sqrt(this._mazeSize);
     }
 

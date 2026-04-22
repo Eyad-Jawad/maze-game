@@ -10,6 +10,7 @@ const renderer = new Renderer(maze, canvas);
 const speed = 0.05;
 
 document.addEventListener("keydown", async (event) => {
+    
     const forward = vec3.fromValues(
         Math.cos(renderer.cameraAngles[0]) * Math.sin(renderer.cameraAngles[2]),
         Math.sin(renderer.cameraAngles[0]),
@@ -25,30 +26,54 @@ document.addEventListener("keydown", async (event) => {
     if (event.key === "Enter") {
         maze.make3DMaze(1);
 
-        renderer.cameraPositions = vec3.fromValues(0.9, 1.0, 0.9);    
-        renderer.cameraAngles = vec3.fromValues(0.0, 0.0, 0.0);
+        renderer.cameraPositions = vec3.fromValues(
+            0.9,
+            1.0,
+            0.9 
+        );
+        renderer.cameraAngles = vec3.fromValues(
+            0.0, 
+            0.0, 
+            0.0
+        );
 
         renderer.initMaze();
         renderer.updateMazeView(forward);
+
     } else if (event.key === "ArrowRight" || event.key === "d") {
-        vec3.scaleAndAdd(renderer.cameraPositions, renderer.cameraPositions, right, speed);
-        renderer.cameraPositions[1] = 1.0;
-        renderer.updateMazeView(forward);
+        vec3.scaleAndAdd(
+            renderer.cameraPositions, 
+            renderer.cameraPositions, 
+            right, 
+            speed
+        );
     } else if (event.key === "ArrowLeft" || event.key === "a") {
-        vec3.scaleAndAdd(renderer.cameraPositions, renderer.cameraPositions, right, -speed);
-        renderer.cameraPositions[1] = 1.0;
-        renderer.updateMazeView(forward);
+        vec3.scaleAndAdd(
+            renderer.cameraPositions, 
+            renderer.cameraPositions, 
+            right, 
+            -speed
+        );
     } else if (event.key === "ArrowUp" || event.key === "w") {
-        vec3.scaleAndAdd(renderer.cameraPositions, renderer.cameraPositions, forward, speed);
-        renderer.cameraPositions[1] = 1.0;
-        renderer.updateMazeView(forward);
+        vec3.scaleAndAdd(
+            renderer.cameraPositions, 
+            renderer.cameraPositions, 
+            forward, 
+            speed
+        );
     } else if (event.key === "ArrowDown" || event.key === "s") {
-        vec3.scaleAndAdd(renderer.cameraPositions, renderer.cameraPositions, forward, -speed);
-        renderer.cameraPositions[1] = 1.0;
-        renderer.updateMazeView(forward);
+        vec3.scaleAndAdd(
+            renderer.cameraPositions, 
+            renderer.cameraPositions, 
+            forward, 
+            -speed
+        );
     } else if (event.key === "escape") {
         document.exitPointerLock();
     }
+
+    renderer.cameraPositions[1] = 1.0;
+    renderer.updateMazeView(forward);
 });
 
 document.addEventListener("click", async () => {
@@ -56,6 +81,7 @@ document.addEventListener("click", async () => {
 });
 
 document.addEventListener("mousemove", (event) => {
+
     const forward = vec3.fromValues(
         Math.cos(renderer.cameraAngles[0]) * Math.sin(renderer.cameraAngles[2]),
         Math.sin(renderer.cameraAngles[0]),
@@ -68,7 +94,13 @@ document.addEventListener("mousemove", (event) => {
         renderer.cameraAngles[2] -= event.movementX * sensitivity;
         
         const maxPitch = Math.PI / 2 - 0.01;
-        renderer.cameraAngles[0] = Math.max(-maxPitch, Math.min(maxPitch, renderer.cameraAngles[0]));
+        renderer.cameraAngles[0] = Math.max(
+            -maxPitch, 
+            Math.min(
+                maxPitch, 
+                renderer.cameraAngles[0]
+            )
+        );
 
         renderer.updateMazeView(forward);
     }
