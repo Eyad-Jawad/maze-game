@@ -23,7 +23,7 @@ class MazeGenerator {
     }
 
     make3DMaze(blockSize) {
-        if (this._maze2D === null) this._make2DMaze();
+        this._make2DMaze();
 
         const scale = 1 / (this._side * blockSize) + 0.5;
         this._maze3D = [];
