@@ -37,7 +37,7 @@ class Renderer {
 
         mat4.perspective(
             this.perspectiveMatrix, 
-            Math.PI / 3, // fov
+            Math.PI / 2, // fov
             canvas.width / canvas.height, // aspect ratio
             0.1,  // near
             100.0 // far

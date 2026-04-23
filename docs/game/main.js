@@ -9,7 +9,7 @@ const maze = new MazeGenerator();
 await maze.init();
 const renderer = new Renderer(maze, canvas);
 const collisionPerventer = new CollisionPerventer();
-const gameLoop = new Game(maze, renderer, collisionPerventer, 0.02);
+const gameLoop = new Game(maze, renderer, collisionPerventer, 0.03);
 
 document.addEventListener("keydown", async (event) => {
     if (event.key === "Enter") {
