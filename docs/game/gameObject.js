@@ -50,6 +50,20 @@ class Game {
                 _keysComponents[key][1]
             );
 
+            const reScale = this.collisionPerventer.reScale;
+            const offset = this.maze.side - 1;
+
+            const x = this.renderer.cameraPositions[0] * reScale - offset;
+            const y = this.renderer.cameraPositions[2] * reScale - offset;
+
+            const distance = Math.sqrt(x * x + y * y);
+            const WIN_RADUIS = 1
+
+            if (distance < WIN_RADUIS) {
+                this.stop();
+                window.alert("You won!\nClick Enter to start a new game");
+            }
+
             this.renderer.cameraPositions[1] = 1.0;
             if (this.collisionPerventer.check(this.renderer.cameraPositions) === false)
                 this.renderer.cameraPositions = [...this.collisionPerventer.lastCoordinates];
