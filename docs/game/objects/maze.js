@@ -12,12 +12,17 @@ class MazeGenerator {
     }
     
     async init() {
-        this.__Module   = await createMazeModule();   
+        this.__Module  = await createMazeModule();   
     }
 
-    _make2DMaze() {
-        const ptr = this.__Module._run(10);
-        this._mazeSize = this.__Module._size(10);
+    _make2DMaze(dimensions = 10, seed = null) {
+        let ptr;
+        if (Number.isInteger(seed)) 
+            ptr = this.__Module._setSeed(dimensions, seed);
+        else
+            ptr = this.__Module._run(dimensions);
+        
+        this._mazeSize = this.__Module._size(dimensions);
         this._maze2D = new Uint8Array(
             this.__Module.HEAPU8.buffer, 
             ptr, 
@@ -26,8 +31,8 @@ class MazeGenerator {
         this._side = Math.sqrt(this._mazeSize);
     }
 
-    make3DMaze(blockSize) {
-        this._make2DMaze();
+    make3DMaze(blockSize, dimensions = 10, seed = null) {
+        this._make2DMaze(dimensions, seed);
 
         const scale = 1 / (this._side * blockSize) + 0.5;
         this._maze3D = [];
