@@ -3,8 +3,17 @@
     "version": "1.0.0",
     "main": "main.js",
     "type": "module",
+    "license": "MIT",
+    "author": {
+        "name": "Eyad Jawad"
+    },
     "dependencies": {
-        "gl-matrix": "^3.4.4",
-        "MazeObject": "1.0.0"
+        "gl-matrix": "^3.4.4"
+    },
+    "devDependencies": {
+        "jest": "^30.3.0"
+    },
+    "scripts": {
+        "test": ""
     }
 }

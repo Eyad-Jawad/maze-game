@@ -9,9 +9,9 @@ class Renderer {
         this.maze = mazeObject;
 
         this.cameraPositions = vec3.fromValues(
-            0.5, // x
+            0.9, // x
             1.0, // z
-            -0.5 // y
+            0.9 // y
         );
         this.cameraAngles = vec3.fromValues(
             0.0, // pitch
