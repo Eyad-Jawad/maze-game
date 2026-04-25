@@ -66,7 +66,19 @@ g++ testing.cpp -O2 -march=native -lgtest -pthread -o test.exe
 
 ```
 
-I also tested it with Valgrind, there were `0` errors, and `0` leaks.
+I also tested it with Valgrind, there were `0` errors, and `0` leaks, to test for valgrind:
+
+```
+
+valgrind \
+    --leak-check=full \
+    --show-leak-kinds=all \
+    --track-origins=yes \
+    --verbose \
+    --log-file=valgrind-out.txt \
+    ./test.exe # Put the file name here
+
+```
 
 ## WASM
 
@@ -74,13 +86,13 @@ To compile the code to WASM or JS run this:
 
 ```
 
-emcc game/wasmLayer.cpp \
--Imaze -O3 \
--o game/maze.js \
--s MODULARIZE=1 \
--s EXPORT_ES6=1 \
--s EXPORTED_FUNCTIONS="['_run','_size']" \
--s EXPORTED_RUNTIME_METHODS="['HEAPU8']"
+emcc wasmLayer.cpp \
+    -Imaze -O3 \
+    -o ./maze.js \
+    -s MODULARIZE=1 \
+    -s EXPORT_ES6=1 \
+    -s EXPORTED_FUNCTIONS="['_run','_size', '_setSeed']" \
+    -s EXPORTED_RUNTIME_METHODS="['HEAPU8']"
 
 ```
 
