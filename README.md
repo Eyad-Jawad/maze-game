@@ -78,7 +78,9 @@ valgrind \
     --log-file=valgrind-out.txt \
     ./test.exe # Put the file name here
 
-```
+```  
+
+To test the JavaScript code you need to first install the JS dependencies using `npm install`, then run `npm test` to run the tests (NOT FULL JS COVERAGE YET).
 
 ## WASM
 
@@ -91,10 +93,10 @@ emcc wasmLayer.cpp \
     -o ./maze.js \
     -s MODULARIZE=1 \
     -s EXPORT_ES6=1 \
+    -sNO_DISABLE_EXCEPTION_CATCHING \
     -s EXPORTED_FUNCTIONS="['_run','_size', '_setSeed']" \
     -s EXPORTED_RUNTIME_METHODS="['HEAPU8']"
 
 ```
 
-however, know that you must have emscripten installed on your computer.  
-You also have to run `npm install` to install the JS dependencies.
+However, know that you must have emscripten installed on your computer.  
