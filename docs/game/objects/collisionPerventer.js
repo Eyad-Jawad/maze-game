@@ -1,8 +1,8 @@
 class CollisionPerventer {
     inputNewMaze(maze2D, blockSize) {
-        this.lastCoordinates = null;
+        this.lastCoordinates = [0.9, 1.0, 0.9];
         this.blockSize = blockSize;
-        this.maze2D = maze2D;
+        this._maze2D = maze2D;
         this.side = Math.sqrt(maze2D.length);
         this.reScale = 1 / (1 / (this.side * blockSize) + 0.5);
     }
@@ -16,21 +16,17 @@ class CollisionPerventer {
     check(cameraPositions) {
         const idx = this.index(cameraPositions[0], cameraPositions[2]);
 
-        if (this.lastCoordinates === null) {
-            this.lastCoordinates = [...cameraPositions];
-            return true;            
-        }
-
+        // outside the maze
         if (
             cameraPositions[0] < 0 || 
             cameraPositions[2] < 0 ||
             Math.floor(cameraPositions[0] * this.reScale) >= this.side ||
             Math.floor(cameraPositions[2] * this.reScale) >= this.side ||
-            idx >= this.maze2D.length
+            idx >= this._maze2D.length
         ) 
-            return true;
+            return false;
 
-        if (this.maze2D[idx] === 0) return false
+        if (this._maze2D[idx] === 0) return false
         else this.lastCoordinates = [...cameraPositions];
         return true
     }
