@@ -1,8 +1,8 @@
-import { mat4, vec3 } from './node_modules/gl-matrix/esm/index.js';
-import { CollisionPerventer } from './collisionPerventerObject.js';
-import { MazeGenerator } from "./mazeObject.js";
-import { Renderer } from './renderer.js';
-import { Game } from './gameObject.js';
+import { mat4, vec3 } from '../node_modules/gl-matrix/esm/index.js'
+import { CollisionPerventer } from '../objects/collisionPerventerObject.js';
+import { MazeGenerator } from "../objects/mazeObject.js";
+import { Renderer } from '../objects/renderer.js';
+import { Game } from '../objects/gameObject.js';
 
 const canvas = document.querySelector("canvas");
 const maze = new MazeGenerator();

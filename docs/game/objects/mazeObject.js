@@ -1,4 +1,4 @@
-import createMazeModule from "./maze.js";
+import createMazeModule from "../wasm/maze.js";
 
 const index = (row, col, N) => { return row * N + col; }
 

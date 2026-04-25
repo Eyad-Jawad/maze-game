@@ -1,6 +1,6 @@
 # maze-game
 
-To try the game go to [this website](https://eyad-jawad.github.io/maze-game/game/), press `Enter` to generate a maze, you can move using `arrow` keys or `WSAD` keys, and use the `mouse` lock the screen to turn the player.
+To try the game go to [this website](https://eyad-jawad.github.io/maze-game/game/website), press `Enter` to generate a maze, you can move using `arrow` keys or `WSAD` keys, and use the `mouse` lock the screen to turn the player.
 Current Progress:
 A 10-by-10 3D Maze:
 ![a screenshot of a cyan 10-by-10 3D maze](3DMaze10.jpg)
