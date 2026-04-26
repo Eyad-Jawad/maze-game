@@ -3,13 +3,13 @@
 To try the game go to [this website](https://eyad-jawad.github.io/maze-game/game/website), press `Enter` to generate a maze, you can move using `arrow` keys or `WSAD` keys, and use the `mouse` lock the screen to turn the player.
 Current Progress:
 A 10-by-10 3D Maze:
-![a screenshot of a cyan 10-by-10 3D maze](3DMaze10.jpg)
+![a screenshot of a cyan 10-by-10 3D maze](./exampleImages/3DMaze10.jpg)
 A 15-by-15 Maze:
-![an image of a 15-by-15 solved maze](mazeImage15.jpg)
+![an image of a 15-by-15 solved maze](./exampleImages/mazeImage15.jpg)
 A 100-by-100 3D Maze:
-![a screenshot of a cyan 100-by-100 3D maze](3DMaze100.jpg)
+![a screenshot of a cyan 100-by-100 3D maze](./exampleImages/3DMaze100.jpg)
 A 255-by-255 Maze:
-![an image of a 255-by-255 solved maze](mazeImage255.jpg)
+![an image of a 255-by-255 solved maze](./exampleImages/mazeImage255.jpg)
 
 ## How To Run
 

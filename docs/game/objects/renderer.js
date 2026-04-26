@@ -1,4 +1,5 @@
-import { mat4, vec3 } from '../node_modules/gl-matrix/esm/index.js';
+import * as mat4 from "../node_modules/gl-matrix/esm/mat4.js";
+import * as vec3 from "../node_modules/gl-matrix/esm/vec3.js";
 import { MazeGenerator } from "./maze.js";
 
 class Renderer {
