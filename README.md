@@ -57,16 +57,24 @@ I have included many tests:
 -Tests for invalid inputs
 -Tests for valid mazes (by solving them)
 -Tests for the maze solver
-To run the test, you must first install the GTest dependency, and then run:
+To run the test, you must first install the GTest dependency, the npm dependencies through `npm install` inside the `docs/game`.  
+For the C++ tests, you should run these command in `project/maze`:  
 
 ```
 
 g++ testing.cpp -O2 -march=native -lgtest -pthread -o test.exe
 ./test.exe
 
-```
+```  
 
-I also tested it with Valgrind, there were `0` errors, and `0` leaks, to test for valgrind:
+And for the JavaScript tests, you should run one command only, after you have installed the dependencies, anywhere inside `docs/game`:
+
+```
+npm test
+
+```  
+
+I also tested the maze generation, solving, and the WASM translation layer, each separately, with Valgrind, there were `0` errors, and `0` leaks, to test for valgrind:
 
 ```
 
@@ -79,8 +87,6 @@ valgrind \
     ./test.exe # Put the file name here
 
 ```  
-
-To test the JavaScript code you need to first install the JS dependencies using `npm install`, then run `npm test` to run the tests (NOT FULL JS COVERAGE YET).
 
 ## WASM
 
@@ -99,4 +105,5 @@ emcc wasmLayer.cpp \
 
 ```
 
-However, know that you must have emscripten installed on your computer.  
+However, know that you must have emscripten installed on your computer.    
+-Eyad
