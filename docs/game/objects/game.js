@@ -11,7 +11,7 @@ class Game {
         this.collisionPerventer = collisionPerventer;
 
         this.fps = 60;
-        this.stopped = false;
+        this.stopped = true;
         this.intervalId = null;
         
         this.speed = speed;
@@ -83,6 +83,7 @@ class Game {
 
     loop() {
         this.maze.make3DMaze(1);
+        this.stopped = false;
 
         this.renderer.cameraPositions = vec3.fromValues(
             0.9,
@@ -106,6 +107,7 @@ class Game {
 
     stop() {
         if (this.intervalId === null) return;
+        this.stopped = true;
         clearInterval(this.intervalId);
     }
 

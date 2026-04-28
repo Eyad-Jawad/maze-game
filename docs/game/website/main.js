@@ -13,7 +13,7 @@ const collisionPerventer = new CollisionPerventer();
 const gameLoop = new Game(maze, renderer, collisionPerventer, 0.03);
 
 document.addEventListener("keydown", async (event) => {
-    if (event.key === "Enter") {
+    if (gameLoop.stopped || event.key === "Enter") {
         gameLoop.stop();
         gameLoop.loop();
     } 
@@ -34,6 +34,10 @@ document.addEventListener("keyup", async (event) => {
 });
 
 document.addEventListener("click", () => {
+    if (gameLoop.stopped) {
+        gameLoop.loop();
+    }
+    
     canvas.requestPointerLock();
 });
 
