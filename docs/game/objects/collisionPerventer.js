@@ -14,20 +14,30 @@ class CollisionPerventer {
     }
 
     check(cameraPositions) {
-        const idx = this.index(cameraPositions[0], cameraPositions[2]);
+        const offset = 0.15;
+        const tests = [
+            [cameraPositions[0], cameraPositions[2]],
+            [cameraPositions[0] + offset, cameraPositions[2]],
+            [cameraPositions[0] - offset, cameraPositions[2]],
+            [cameraPositions[0], cameraPositions[2] + offset],
+            [cameraPositions[0], cameraPositions[2] - offset]
+        ];
 
-        // outside the maze
-        if (
-            cameraPositions[0] < 0 || 
-            cameraPositions[2] < 0 ||
-            Math.floor(cameraPositions[0] * this.reScale) >= this.side ||
-            Math.floor(cameraPositions[2] * this.reScale) >= this.side ||
-            idx >= this._maze2D.length
-        ) 
-            return false;
+        for (const [x, z] of tests) {
+            const idx = this.index(x, z);
+    
+            // outside the maze
+            if (
+                x < 0 || z < 0 ||
+                Math.floor(x * this.reScale) >= this.side ||
+                Math.floor(z * this.reScale) >= this.side ||
+                idx >= this._maze2D.length ||
+                this._maze2D[idx] === 0
+            ) 
+                return false;
+        }
 
-        if (this._maze2D[idx] === 0) return false
-        else this.lastCoordinates = [...cameraPositions];
+        this.lastCoordinates = [...cameraPositions];
         return true
     }
 }

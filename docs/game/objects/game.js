@@ -66,8 +66,18 @@ class Game {
             }
 
             this.renderer.cameraPositions[1] = 1.0;
+            const dx = this.renderer.cameraPositions[0] - this.collisionPerventer.lastCoordinates[0];
+            const dy = this.renderer.cameraPositions[2] - this.collisionPerventer.lastCoordinates[2];
+
+            this.renderer.cameraPositions[2] -= dy;
+
             if (this.collisionPerventer.check(this.renderer.cameraPositions) === false)
-                this.renderer.cameraPositions = [...this.collisionPerventer.lastCoordinates];
+                this.renderer.cameraPositions[0] -= dx;
+
+            this.renderer.cameraPositions[2] += dy;
+            if (this.collisionPerventer.check(this.renderer.cameraPositions) === false)
+                this.renderer.cameraPositions[2] -= dy;
+
         }
         this.handleMouse();
     }
