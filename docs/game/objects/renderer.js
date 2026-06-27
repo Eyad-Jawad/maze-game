@@ -27,8 +27,8 @@ class Renderer {
         mat4.identity(this.modelMatrix);
 
         this.gl.enable(this.gl.DEPTH_TEST);
-        canvas.width = 1920;
-        canvas.height = 1080;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
         this.gl.viewport(
             0, 
             0, 
