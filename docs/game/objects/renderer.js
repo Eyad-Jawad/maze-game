@@ -3,9 +3,12 @@ import * as vec3 from "../node_modules/gl-matrix/esm/vec3.js";
 import { MazeGenerator } from "./maze.js";
 
 class Renderer {
-    constructor(mazeObject, canvas) {
-        this.gl = canvas.getContext("webgl");
+    constructor(mazeObject, glCanvas, uiCanvas) {
+        this.uiCanvas = uiCanvas;
+        this.gl = glCanvas.getContext("webgl");
+        this.ctx = this.uiCanvas.getContext("2d");
         if (!this.gl) throw new Error("WebGl was not found.");
+        if (!this.ctx) throw new Error("2D canvas was not initiated.");
 
         this.maze = mazeObject;
 
@@ -27,19 +30,23 @@ class Renderer {
         mat4.identity(this.modelMatrix);
 
         this.gl.enable(this.gl.DEPTH_TEST);
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        glCanvas.width = window.innerWidth;
+        glCanvas.height = window.innerHeight;
+
+        this.uiCanvas.width = glCanvas.width / 8;
+        this.uiCanvas.height = glCanvas.height / 4;
+
         this.gl.viewport(
             0, 
             0, 
-            canvas.width, 
-            canvas.height
+            glCanvas.width, 
+            glCanvas.height
         );
 
         mat4.perspective(
             this.perspectiveMatrix, 
             Math.PI / 2, // fov
-            canvas.width / canvas.height, // aspect ratio
+            glCanvas.width / glCanvas.height, // aspect ratio
             0.1,  // near
             100.0 // far
         );
@@ -172,6 +179,45 @@ class Renderer {
                 this.gl.getProgramInfoLog(this.program)
             );
         }
+
+        this.ctx.fillStyle = "red";
+        this.ctx.fillRect(0, 0, this.uiCanvas.width, this.uiCanvas.height);
+
+        this.drawMinimap();
+    }
+
+    drawMinimap() {
+        let side = this.maze._side;
+        const index = (row, col, N) => { return row * N + col; }
+        const blockWidth = this.uiCanvas.width / side;
+        const blockHeight = this.uiCanvas.height / side;
+
+        for (let i = 0; i < side; i++) {
+            for (let j = 0; j < side; j++) {
+                if (this.maze.maze2D[index(i, j, side)])
+                    this.ctx.fillStyle = "white";
+                else
+                    this.ctx.fillStyle = "black";
+
+                this.ctx.fillRect(
+                    i * blockWidth, 
+                    j * blockHeight, 
+                    blockWidth, 
+                    blockHeight
+                );
+            }
+        }
+
+        const x = Math.round(this.cameraPositions[0] * 2 - 1);
+        const y = Math.round(this.cameraPositions[2] * 2 - 1);
+        
+        this.ctx.fillStyle = "green";
+        this.ctx.fillRect(
+            y * blockWidth,
+            x * blockHeight,
+            blockWidth,
+            blockHeight
+        );
     }
 }
 

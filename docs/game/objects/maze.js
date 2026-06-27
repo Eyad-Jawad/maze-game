@@ -118,6 +118,24 @@ class MazeGenerator {
         return this._maze3D;
     }
 
+    getMinimap() {
+        let side = this._side;
+        let minimap = [];
+
+        for (let i = 0; i < side; i++) {
+            minimap[i] = [];
+            for (let j = 0; j < side; j++) {
+                if (this._maze2D[index(i, j, side)])
+                    minimap[i][j] =  "  ";
+                else
+                    minimap[i][j] = "██";
+            }
+            minimap[i][side] = "\n";
+        }
+
+        return minimap;
+    }
+
     get mazeSize() {
         if (this._mazeSize === null) this._make2DMaze();
         return this._mazeSize;
@@ -136,7 +154,7 @@ class MazeGenerator {
     get maze3D() {
         if (this._maze3D === null) this.make3DMaze();
         return this._maze3D;
-    }
+    } 
 }
 
 export { MazeGenerator };

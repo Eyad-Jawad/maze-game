@@ -5,10 +5,11 @@ import { MazeGenerator } from "../objects/maze.js";
 import { Renderer } from '../objects/renderer.js';
 import { Game } from '../objects/game.js';
 
-const canvas = document.querySelector("canvas");
+const glCanvas = document.getElementById("glCanvas");
+const uiCanvas = document.getElementById("uiCanvas");
 const maze = new MazeGenerator();
 await maze.init();
-const renderer = new Renderer(maze, canvas);
+const renderer = new Renderer(maze, glCanvas, uiCanvas);
 const collisionPerventer = new CollisionPerventer();
 const gameLoop = new Game(maze, renderer, collisionPerventer, 0.03);
 
@@ -38,10 +39,10 @@ document.addEventListener("click", () => {
         gameLoop.loop();
     }
     
-    canvas.requestPointerLock();
+    glCanvas.requestPointerLock();
 });
 
 document.addEventListener("mousemove", (event) => {
-    if (document.pointerLockElement === canvas)
+    if (document.pointerLockElement === glCanvas)
         gameLoop.updateMouse(event.movementX, event.movementY);
 });
