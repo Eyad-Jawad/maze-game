@@ -208,8 +208,25 @@ class Renderer {
             }
         }
 
-        const x = Math.round(this.cameraPositions[0] * 2 - 1);
-        const y = Math.round(this.cameraPositions[2] * 2 - 1);
+        let x = Math.round(this.cameraPositions[0] * 2 - 1);
+        let y = Math.round(this.cameraPositions[2] * 2 - 1);
+
+        let foundWay = false;
+        for (let i = -1; i <= 1; i++) {
+            if (foundWay) break;
+            for (let j = -1; j <= 1; j++) {
+                const idx = index(y + i, x + j, side);
+                if (idx >= this.maze.mazeSize) continue;
+
+                if (this.maze.maze2D[idx] === 1) {
+                    x += j;
+                    y += i;
+                    foundWay = true;
+                    break;
+                }
+
+            }
+        }
         
         this.ctx.fillStyle = "green";
         this.ctx.fillRect(
