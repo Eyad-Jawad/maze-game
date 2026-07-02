@@ -17,11 +17,11 @@ private:
             {-1, 0}  // down
         };
 
-        static constexpr int MAX_SIZE = (2 * 255 + 1) * (2 * 255 + 1);
+    static constexpr int MAX_SIZE = (2 * 255 + 1) * (2 * 255 + 1);
 
-        int cameFrom[MAX_SIZE];
-        int currentCost[MAX_SIZE];
-        int expectedCost[MAX_SIZE];
+    int cameFrom[MAX_SIZE];
+    int currentCost[MAX_SIZE];
+    int expectedCost[MAX_SIZE];
 
     std::vector <int> 
         reconstructPath (
@@ -42,79 +42,79 @@ private:
             return path;
         }
 
-        int heuristic (int row, int col) {
-            return abs(row - (side - 2)) +
-                   abs(col - (side - 2));
+    int heuristic (int row, int col) {
+        return abs(row - (side - 2)) +
+                abs(col - (side - 2));
+    }
+
+    std::vector <int> aStar () {
+        // ==============================
+        //         INITIALIZATION        
+        // ==============================
+        
+        for (int i = 0, size = side * side; i < size; i++) {
+            cameFrom[i] = -1;
+            currentCost[i] = -1;
+            expectedCost[i] = std::numeric_limits <int>::max();
         }
 
-        std::vector <int> aStar () {
-            // ==============================
-            //         INITIALIZATION        
-            // ==============================
-            
-            for (int i = 0, size = side * side; i < size; i++) {
-                cameFrom[i] = -1;
-                currentCost[i] = -1;
-                expectedCost[i] = std::numeric_limits <int>::max();
+        auto pqComp = [this] (
+            const int & a, const int & b
+        ) {
+            return expectedCost[a] > expectedCost[b];
+        };
+
+        std::priority_queue <
+            int,
+            std::vector <int>, 
+            decltype(pqComp)
+        > openSet(pqComp);
+
+        int startRow = 1;
+        int startCol = 1;
+        int startIdx = index(startRow, startCol, side);
+        openSet.push(startIdx);
+        currentCost[startIdx] = 0;
+        expectedCost[startIdx] = heuristic(startRow, startCol);
+
+        // ==============================
+        //         MAZE SOLVING          
+        // ==============================
+        while (!openSet.empty()) {
+            if (openSet.top() == goal) {
+                return reconstructPath(openSet.top());
             }
 
-            auto pqComp = [this] (
-                const int & a, const int & b
-            ) {
-                return expectedCost[a] > expectedCost[b];
-            };
+            for (auto & [y, x] : directions) {
+                int discoverRow = openSet.top() / side + y;
+                int discoverCol = openSet.top() % side + x;
+                int discoverIdx = index(discoverRow, discoverCol, side);
 
-            std::priority_queue <
-                int,
-                std::vector <int>, 
-                decltype(pqComp)
-            > openSet(pqComp);
+                if (discoverCol < 0 || discoverCol >= side || 
+                    discoverRow < 0 || discoverRow >= side ||
+                    !maze[discoverIdx]) 
+                    continue;
 
-            int startRow = 1;
-            int startCol = 1;
-            int startIdx = index(startRow, startCol, side);
-            openSet.push(startIdx);
-            currentCost[startIdx] = 0;
-            expectedCost[startIdx] = heuristic(startRow, startCol);
+                int score = currentCost[openSet.top()] + 1;
 
-            // ==============================
-            //         MAZE SOLVING          
-            // ==============================
-            while (!openSet.empty()) {
-                if (openSet.top() == goal) {
-                    return reconstructPath(openSet.top());
+                int it = currentCost[discoverIdx];
+                int discoverCost = (
+                    it != -1
+                    ? it : 
+                    std::numeric_limits <int>::max());
+
+                if (score < discoverCost) {
+                    cameFrom[discoverIdx] = openSet.top();
+                    currentCost[discoverIdx] = score;
+                    expectedCost[discoverIdx] = currentCost[discoverIdx] + heuristic(discoverRow, discoverCol);
+
+                    openSet.push(discoverIdx);
                 }
-
-                for (auto & [y, x] : directions) {
-                    int discoverRow = openSet.top() / side + y;
-                    int discoverCol = openSet.top() % side + x;
-                    int discoverIdx = index(discoverRow, discoverCol, side);
-
-                    if (discoverCol < 0 || discoverCol >= side || 
-                        discoverRow < 0 || discoverRow >= side ||
-                        !maze[discoverIdx]) 
-                        continue;
-
-                    int score = currentCost[openSet.top()] + 1;
-
-                    int it = currentCost[discoverIdx];
-                    int discoverCost = (
-                        it != -1
-                        ? it : 
-                        std::numeric_limits <int>::max());
-
-                    if (score < discoverCost) {
-                       cameFrom[discoverIdx] = openSet.top();
-                       currentCost[discoverIdx] = score;
-                       expectedCost[discoverIdx] = currentCost[discoverIdx] + heuristic(discoverRow, discoverCol);
-
-                        openSet.push(discoverIdx);
-                    }
-                }
-                openSet.pop();
             }
-            return {};
+            openSet.pop();
         }
+        return {};
+    }
     
 public:
     pathFinder(mazeGrid & m) : maze(m.getMaze()) {
