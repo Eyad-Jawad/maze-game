@@ -1,12 +1,6 @@
 #pragma once
 
-#include <algorithm>
-#include <array>
-#include <iostream>
-#include <optional>
-#include <random>
-
-inline int index(int row, int col, int N) { return row * N + col; }
+#include "inc.h"
 
 class mazeGrid {
 private:
@@ -88,19 +82,7 @@ public:
         }
     }
 
-    void printMaze() {
-        for (int i = 0; i < side; i++) {
-            for (int j = 0; j < side; j++) {
-                if (maze[index(i, j, side)])
-                    std::cout << "  ";
-                else
-                    std::cout << "██";
-            }
-            std::cout << '\n';
-        }
-    }
-
-    void validDimensions() {
+    void validDimensions() const {
         if (dimensions <= 0)
             throw std::runtime_error("Invalid maze dimensions: Maze dimensions less than 1");
         else if (dimensions >= 256)

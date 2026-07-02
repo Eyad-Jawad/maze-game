@@ -1,11 +1,9 @@
 /*
     Add logs.
-    check emscripten
     --Eyad
 */
-#include <fstream>
-#include <stdexcept>
-#include <string>
+
+#include "inc.h"
 #include "mazeGenerator.h"
 #include "mazeSolver.h"
 
@@ -13,7 +11,7 @@ void savePPM(const std::vector <uint8_t> & maze, int side);
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
-        std::cout << "Usage: ./main.exe MazeDims\n";
+        std::cout << "Usage: ./app MazeDimensions\n";
         return 1;
     }
 
@@ -37,9 +35,9 @@ void savePPM(const std::vector <uint8_t> & maze, int side) {
     for (auto const & cell : maze) {
         uint8_t r, g, b;
 
-        if (cell == 0) {
+        if (cell == WALL) {
             r = g = b = 0;
-        } else if (cell == 1) {
+        } else if (cell == PATH) {
             r = g = b = 255;
         } else {
             r = b = 0;

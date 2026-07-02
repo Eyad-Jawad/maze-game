@@ -1,9 +1,7 @@
 #pragma once
 
-#include <limits>
+#include "inc.h"
 #include "mazeGenerator.h"
-#include <map>
-#include <queue>
 
 class pathFinder {
 private:
@@ -128,22 +126,7 @@ public:
             maze[i] = 2;
         }
     }
-
-    void printBoard() {
-        for (int i = 0; i < side; i++) {
-            for (int j = 0; j < side; j++) {
-                int idx = index(i, j, side);
-                if (!maze[idx]) {
-                    std::cout << "██";
-                } else if (maze[idx] == 1) {
-                    std::cout << "  ";
-                } else {
-                    std::cout << "..";
-                }
-            }
-            std::cout << '\n';
-        }
-    }
+    
     // ==============================
     //            GETTERS
     // ==============================
