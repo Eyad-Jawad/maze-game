@@ -1,2 +1,4 @@
 *.exe
+tests
+app
 node_modules

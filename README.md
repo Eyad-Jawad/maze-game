@@ -17,7 +17,7 @@ To compile this project you need to be in the src folder, and run:
 
 ```
 
-g++ main.cpp -O2 -march=native -o main.exe
+g++ main.cpp -O2 -march=native -o app
 
 ```
 
@@ -25,9 +25,17 @@ And to run it you just need to determine the dimensions of the maze:
 
 ```
 
-./main.exe mazeDimension
+./app mazeDimension
 
 ```
+Or you could make use of makefile and just do this:  
+
+```
+
+make app # or just plain `make`
+./app mazeDimension
+
+```  
 
 Please put in mind that you can't input less than `1` or more than `255` (arbitrary constrain)
 
@@ -62,8 +70,17 @@ For the C++ tests, you should run these command in `project/maze`:
 
 ```
 
-g++ testing.cpp -O2 -march=native -lgtest -pthread -o test.exe
-./test.exe
+g++ testing.cpp -O2 -march=native -lgtest -pthread -o tests
+./tests
+
+```  
+
+Or you could make use of makefile and just do this:  
+
+```
+
+make test # or just plain `make`
+./tests
 
 ```  
 
@@ -84,7 +101,7 @@ valgrind \
     --track-origins=yes \
     --verbose \
     --log-file=valgrind-out.txt \
-    ./test.exe # Put the file name here
+    ./tests # Put the file name here
 
 ```  
 
