@@ -2,3 +2,4 @@
 tests
 app
 node_modules
+*.ppm

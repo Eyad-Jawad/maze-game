@@ -6,6 +6,7 @@
 #include "inc.h"
 #include "mazeGenerator.h"
 #include "mazeSolver.h"
+#include "printMaze.h"
 
 void savePPM(const std::vector <uint8_t> & maze, int side);
 
@@ -23,6 +24,7 @@ int main(int argc, char *argv[]) {
     mazeSolver.solveMaze();
 
     savePPM(mazeSolver.getMaze(), mazeSolver.getSide());
+    printBoard(mazeGenerator.getMaze(), mazeGenerator.getSide());
     
     return 0;
 }

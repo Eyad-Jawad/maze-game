@@ -1,4 +1,4 @@
-dependincies = mazeGenerator.h mazeSolver.h
+dependincies = mazeGenerator.h mazeSolver.h inc.h
 perArgs = -O2 -march=native # Performance Arguments
 warArgs = -Wall -Wextra -Wpedantic # Extra Warnings Arguments
 
