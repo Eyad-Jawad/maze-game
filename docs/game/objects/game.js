@@ -1,8 +1,4 @@
-import * as mat4 from "../node_modules/gl-matrix/esm/mat4.js";
 import * as vec3 from "../node_modules/gl-matrix/esm/vec3.js";
-import { CollisionPerventer } from './collisionPerventer.js';
-import { MazeGenerator } from './maze.js';
-import { Renderer } from './renderer.js';
 
 class Game {
     constructor(maze, renderer, collisionPerventer, speed) {

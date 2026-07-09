@@ -1,6 +1,5 @@
 import { MazeGenerator } from "../objects/maze.js";
 import fs from 'fs'
-import { pathToFileURL } from "url";
 
 /* boilerplate
 test("", => () {

@@ -1,5 +1,3 @@
-import * as mat4 from "../node_modules/gl-matrix/esm/mat4.js";
-import * as vec3 from "../node_modules/gl-matrix/esm/vec3.js";
 import { CollisionPerventer } from '../objects/collisionPerventer.js';
 import { MazeGenerator } from "../objects/maze.js";
 import { Renderer } from '../objects/renderer.js';
