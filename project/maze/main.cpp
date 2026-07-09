@@ -10,7 +10,7 @@
 
 void savePPM(const std::vector <uint8_t> & maze, int side);
 
-int main(int argc, char *argv[]) {
+auto main(int argc, char *argv[]) -> int {
     if (argc != 2) {
         std::cout << "Usage: ./app MazeDimensions\n";
         return 1;
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
     mazeGrid mazeGenerator = mazeGrid(N); // pass the dimensions
     mazeGenerator.makeMaze();
 
-    pathFinder mazeSolver = pathFinder(mazeGenerator);
+    auto mazeSolver = pathFinder(mazeGenerator);
     mazeSolver.solveMaze();
 
     savePPM(mazeSolver.getMaze(), mazeSolver.getSide());
@@ -46,8 +46,8 @@ void savePPM(const std::vector <uint8_t> & maze, int side) {
             g = 255;
         }
 
-        mazeImage.write((char*)&r, 1);
-        mazeImage.write((char*)&g, 1);
-        mazeImage.write((char*)&b, 1);
+        mazeImage.write(reinterpret_cast<char*>(&r), 1);
+        mazeImage.write(reinterpret_cast<char*>(&g), 1);
+        mazeImage.write(reinterpret_cast<char*>(&b), 1);
     }
 }

@@ -21,10 +21,10 @@ private:
     int currentCost[MAX_SIZE];
     int expectedCost[MAX_SIZE];
 
-    std::vector <int> 
+    auto 
         reconstructPath (
             int current
-        ) 
+        ) -> std::vector <int> 
         {
             std::vector <int> path = {current};
             path.reserve(side);
@@ -36,16 +36,16 @@ private:
                 path.push_back(current);
             }
 
-            std::reverse(path.begin(), path.end());
+            std::ranges::reverse(path);
             return path;
         }
 
-    int heuristic (int row, int col) {
+    auto heuristic (int row, int col) -> int {
         return abs(row - (side - 2)) +
                 abs(col - (side - 2));
     }
 
-    std::vector <int> aStar () {
+    auto aStar () -> std::vector <int> {
         // ==============================
         //         INITIALIZATION        
         // ==============================
@@ -58,7 +58,7 @@ private:
 
         auto pqComp = [this] (
             const int & a, const int & b
-        ) {
+        ) -> bool {
             return expectedCost[a] > expectedCost[b];
         };
 
@@ -130,15 +130,15 @@ public:
     // ==============================
     //            GETTERS
     // ==============================
-    int getGoal() {
+    auto getGoal() -> int {
         return goal;
     }
 
-    std::vector <uint8_t> & getMaze() {
+    auto getMaze() -> std::vector <uint8_t> & {
         return maze;
     }
 
-    int getSide() {
+    auto getSide() -> int {
         return side;
     }
 };

@@ -1,0 +1,35 @@
+[
+  {
+    "file": "main.cpp",
+    "arguments": [
+      "/usr/bin/g++",
+      "main.cpp",
+      "-O2",
+      "-march=native",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-o",
+      "app"
+    ],
+    "directory": "/home/eyad/Programming/c++Newbie/mazeGame/project/maze",
+    "output": "app"
+  },
+  {
+    "file": "testing.cpp",
+    "arguments": [
+      "/usr/bin/g++",
+      "testing.cpp",
+      "-O2",
+      "-march=native",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-pthread",
+      "-o",
+      "tests"
+    ],
+    "directory": "/home/eyad/Programming/c++Newbie/mazeGame/project/maze",
+    "output": "tests"
+  }
+]

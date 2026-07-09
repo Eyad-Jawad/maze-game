@@ -133,7 +133,7 @@ INSTANTIATE_TEST_SUITE_P (
     ::testing::Values(1, 2, 10, 15, 20, 50, 100, 200, 255)
 );
 
-int main(int argc, char *argv[]) {
+auto main(int argc, char *argv[]) -> int {
     testing::InitGoogleTest(&argc, argv);
 
     return RUN_ALL_TESTS();

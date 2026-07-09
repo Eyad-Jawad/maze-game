@@ -18,4 +18,4 @@ enum Cell : uint8_t {
     SOLUTION
 };
 
-inline int index(int row, int col, int N) { return row * N + col; }
+inline auto index(int row, int col, int N) -> int { return row * N + col; }

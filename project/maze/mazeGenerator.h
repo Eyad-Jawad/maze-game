@@ -42,7 +42,7 @@ public:
         std::array <int, 4> directionsIdx = {0, 1, 2, 3};
 
         std::vector <std::pair <int, int>> cellStack;
-        cellStack.push_back({1, 1});
+        cellStack.emplace_back(1, 1);
         maze[index(1, 1, side)] = 1;
         
         // ==============================
@@ -68,7 +68,7 @@ public:
                     continue;
                 }
 
-                cellStack.push_back({row, col}); 
+                cellStack.emplace_back(row, col); 
 
                 // collapse the wall between your current cell and this cell
                 int wall = index(row + direction.first / 2, col + direction.second / 2, side);
@@ -76,7 +76,7 @@ public:
 
                 // mark this cell as visited (path)
                 maze[index(discoverRow, discoverCol, side)] = 1;
-                cellStack.push_back({discoverRow, discoverCol});
+                cellStack.emplace_back(discoverRow, discoverCol);
                 break;
             }
         }
@@ -92,19 +92,19 @@ public:
     // ==============================
     //            GETTERS
     // ==============================
-    int getSide() {
+    auto getSide() -> int {
         return side;
     }
 
-    int getMazeSize() {
+    auto getMazeSize() -> int {
         return mazeSize;
     }
 
-    int getDimensions() {
+    auto getDimensions() -> int {
         return dimensions;
     }
 
-    std::vector <uint8_t> & getMaze() {
+    auto getMaze() -> std::vector <uint8_t> & {
         return maze;
     }
 
