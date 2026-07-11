@@ -36,7 +36,7 @@ document.addEventListener("keydown", async (event) => {
     else if (event.key === "Escape") document.exitPointerLock();
 });
 
-document.addEventListener("keyup", async (etruevent) => {
+document.addEventListener("keyup", async (event) => {
     if (event.key in inputKeys) gameLoop.updateKey(inputKeys[event.key], false);
 });
 
