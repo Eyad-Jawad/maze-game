@@ -11,25 +11,33 @@ const renderer = new Renderer(maze, glCanvas, uiCanvas);
 const collisionPerventer = new CollisionPerventer();
 const gameLoop = new Game(maze, renderer, collisionPerventer, 0.03);
 
+const inputKeys = {
+    "w" : "w", 
+    "s" : "s", 
+    "a" : "a", 
+    "d" : "d", 
+    "W" : "w", 
+    "S" : "s", 
+    "A" : "a", 
+    "D" : "d", 
+    "ArrowUp" : "w", 
+    "ArrowDown" : "s",
+    "ArrowLeft" : "a", 
+    "ArrowRight" : "d", 
+};
+
 document.addEventListener("keydown", async (event) => {
     if (gameLoop.stopped || event.key === "Enter") {
         gameLoop.stop();
         gameLoop.loop();
     } 
 
-    else if (event.key === "ArrowRight" || event.key === "d" || event.key === "D") gameLoop.updateKey("d", true);
-    else if (event.key === "ArrowLeft"  || event.key === "a" || event.key === "A") gameLoop.updateKey("a", true);
-    else if (event.key === "ArrowUp"    || event.key === "w" || event.key === "W") gameLoop.updateKey("w", true);
-    else if (event.key === "ArrowDown"  || event.key === "s" || event.key === "S") gameLoop.updateKey("s", true);
-    else if (event.key === "Escape") 
-        document.exitPointerLock();
+    else if (event.key in inputKeys) gameLoop.updateKey(inputKeys[event.key], true);
+    else if (event.key === "Escape") document.exitPointerLock();
 });
 
-document.addEventListener("keyup", async (event) => {
-    if (event.key === "ArrowRight"      || event.key === "d" || event.key === "D") gameLoop.updateKey("d", false);
-    else if (event.key === "ArrowLeft"  || event.key === "a" || event.key === "A") gameLoop.updateKey("a", false);
-    else if (event.key === "ArrowUp"    || event.key === "w" || event.key === "W") gameLoop.updateKey("w", false);
-    else if (event.key === "ArrowDown"  || event.key === "s" || event.key === "S") gameLoop.updateKey("s", false);
+document.addEventListener("keyup", async (etruevent) => {
+    if (event.key in inputKeys) gameLoop.updateKey(inputKeys[event.key], false);
 });
 
 document.addEventListener("click", () => {
