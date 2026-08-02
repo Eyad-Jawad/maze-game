@@ -22,8 +22,9 @@ jobs:
 
       - name: Set up npm
         working-directory: src/game
-        run:
+        run: |
           npm ci --omit=dev
+          touch .nojekyll
       
       - name: Upload files
         id: deployment
