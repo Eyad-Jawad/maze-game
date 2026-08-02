@@ -23,7 +23,7 @@ jobs:
       - name: Set up npm
         working-directory: src/game
         run:
-          npm ci --omit=devDependencies
+          npm ci --omit=dev
       
       - name: Upload files
         id: deployment
