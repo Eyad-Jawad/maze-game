@@ -1,0 +1,37 @@
+name: C++ CI
+
+on: 
+  push:
+    paths:
+      - 'src/maze/**'
+      - '.github/workflows/cpp.yml'
+  
+  pull_request:
+    paths:
+      - 'src/maze/**'
+      - '.github/workflows/cpp.yml'
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout The Repository
+        uses: actions/checkout@v7
+
+      - name: Update packages 
+        run: sudo apt update
+      
+      - name: Install Gtest
+        run: sudo apt install libgtest-dev
+      
+      - name: Install make
+        run: sudo apt install make
+      
+      - name: Compile the tests
+        working-directory: src/maze
+        run: make tests
+
+      - name: Run the tests
+        working-directory: src/maze
+        run: ./tests

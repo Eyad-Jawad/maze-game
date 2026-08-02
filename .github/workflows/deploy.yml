@@ -1,0 +1,50 @@
+name: Deploy The Game
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout The Repository
+        uses: actions/checkout@v7
+      
+      - name: Set Up Node.js
+        uses: actions/setup-node@v7
+        with: 
+          node-version: '26'
+          cache: npm
+          cache-dependency-path: src/game/package-lock.json
+
+      - name: Set up npm
+        working-directory: src/game
+        run:
+          npm ci --omit=devDependencies
+      
+      - name: Upload files
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: src/game/
+
+  deploy:
+    needs: upload
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+  
+    steps:      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

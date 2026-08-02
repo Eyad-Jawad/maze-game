@@ -1,7 +1,7 @@
-import { CollisionPerventer } from '../objects/collisionPerventer.js';
-import { MazeGenerator } from "../objects/maze.js";
-import { Renderer } from '../objects/renderer.js';
-import { Game } from '../objects/game.js';
+import { CollisionPerventer } from './objects/collisionPerventer.js';
+import { MazeGenerator } from './objects/maze.js';
+import { Renderer } from './objects/renderer.js';
+import { Game } from './objects/game.js';
 
 const glCanvas = document.getElementById("glCanvas");
 const uiCanvas = document.getElementById("uiCanvas");

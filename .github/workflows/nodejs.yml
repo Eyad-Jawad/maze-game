@@ -1,0 +1,38 @@
+name: Node.js CI 
+
+on: 
+  push:
+    paths:
+      - 'src/game/**'
+      - 'src/maze/mazeGeneration.h'
+      - '.github/workflows/nodejs.yml'
+  
+  pull_request:
+    paths:
+      - 'src/game/**'
+      - 'src/maze/mazeGeneration.h'
+      - '.github/workflows/nodejs.yml'
+      
+
+jobs: 
+  tests:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout The Repository
+        uses: actions/checkout@v7
+      
+      - name: Set Up Node.js
+        uses: actions/setup-node@v7
+        with: 
+          node-version: '26'
+          cache: npm
+          cache-dependency-path: src/game/package-lock.json
+      
+      - name: Install dependencies
+        working-directory: src/game
+        run: npm ci
+
+      - name: Run Tests
+        working-directory: src/game
+        run: npm test

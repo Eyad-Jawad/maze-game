@@ -1,5 +1,5 @@
 *.exe
-tests
-app
-node_modules
+src/maze/tests
+src/maze/app
+node_modules/
 *.ppm

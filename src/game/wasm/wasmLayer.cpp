@@ -1,4 +1,4 @@
-#include "../../../project/maze/mazeGenerator.h"
+#include "../../maze/mazeGenerator.h"
 
 std::vector <uint8_t> maze;
 
