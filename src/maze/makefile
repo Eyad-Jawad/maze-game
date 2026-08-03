@@ -1,5 +1,5 @@
 dependincies = mazeGenerator.h mazeSolver.h inc.h
-verArgs = -std=c++20
+verArgs = -std=c++23
 perArgs = -O2 -march=native # Performance Arguments
 warArgs = -Wall -Wextra -Wpedantic # Extra Warnings Arguments
 

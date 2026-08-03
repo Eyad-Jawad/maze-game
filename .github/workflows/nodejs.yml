@@ -35,4 +35,6 @@ jobs:
 
       - name: Run Tests
         working-directory: src/game
-        run: npm test
+        run: |
+          npm test
+          npx eslint main.js objects/ 
