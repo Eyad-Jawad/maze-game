@@ -1,5 +1,7 @@
 *.exe
 src/maze/tests
 src/maze/app
-node_modules/
 *.ppm
+valgrind-out.txt
+
+node_modules/

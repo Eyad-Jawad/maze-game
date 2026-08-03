@@ -20,21 +20,6 @@ To compile this project you need to be in the src folder, and run:
 
 ```
 
-g++ main.cpp -O2 -march=native -o app
-
-```
-
-And to run it you just need to determine the dimensions of the maze:
-
-```
-
-./app mazeDimension
-
-```
-Or you could make use of makefile and just do this:  
-
-```
-
 make app # or just plain `make`
 ./app mazeDimension
 
@@ -62,23 +47,8 @@ Or it takes `150 ms` to generate and solve 10 255-by-255 mazes, on my machine.
 
 ## Tests
 
-I have included many tests:
--Tests for variables
--Tests using a seeded pre-generated maze from a working version to compare against to know if the generation failed
--Tests for invalid inputs
--Tests for valid mazes (by solving them)
--Tests for the maze solver
-To run the test, you must first install the GTest dependency, the npm dependencies through `npm install` inside the `docs/game`.  
-For the C++ tests, you should run these command in `project/maze`:  
-
-```
-
-g++ testing.cpp -O2 -march=native -lgtest -pthread -o tests
-./tests
-
-```  
-
-Or you could make use of makefile and just do this:  
+To run the test, you must first install the GTest dependency, the npm dependencies through `npm ci` inside the `src/game`.  
+For the C++ tests, you should run these command in `src/maze`:  
 
 ```
 
@@ -87,9 +57,11 @@ make test # or just plain `make`
 
 ```  
 
-And for the JavaScript tests, you should run one command only, after you have installed the dependencies, anywhere inside `docs/game`:
+And for the JavaScript tests, you should run one command only, after you have installed the dependencies, anywhere inside `src/game`:
 
 ```
+
+npm ci
 npm test
 
 ```  
@@ -119,7 +91,7 @@ emcc wasmLayer.cpp \
     -o ./maze.js \
     -s MODULARIZE=1 \
     -s EXPORT_ES6=1 \
-    -sNO_DISABLE_EXCEPTION_CATCHING \
+    -s NO_DISABLE_EXCEPTION_CATCHING \
     -s EXPORTED_FUNCTIONS="['_run','_size', '_setSeed']" \
     -s EXPORTED_RUNTIME_METHODS="['HEAPU8']"
 
