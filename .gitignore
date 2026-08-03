@@ -5,3 +5,4 @@ src/maze/app
 valgrind-out.txt
 
 node_modules/
+src/game/dist/

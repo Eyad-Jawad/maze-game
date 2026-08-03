@@ -1,4 +1,4 @@
-import * as vec3 from "../node_modules/gl-matrix/esm/vec3.js";
+import * as vec3 from "gl-matrix/esm/vec3.js";
 
 class Game {
     constructor(maze, renderer, collisionPerventer, speed) {

@@ -1,5 +1,5 @@
-import * as mat4 from "../node_modules/gl-matrix/esm/mat4.js";
-import * as vec3 from "../node_modules/gl-matrix/esm/vec3.js";
+import * as mat4 from "gl-matrix/esm/mat4.js";
+import * as vec3 from "gl-matrix/esm/vec3.js";
 
 class Renderer {
     constructor(mazeObject, glCanvas, uiCanvas) {

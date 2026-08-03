@@ -8,7 +8,8 @@
         "name": "Eyad Jawad"
     },
     "dependencies": {
-        "gl-matrix": "^3.4.4"
+        "gl-matrix": "^3.4.4",
+        "vite": "^8.2.0"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.29.2",
@@ -18,6 +19,8 @@
         "jest": "^30.3.0"
     },
     "scripts": {
-        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+        "dev": "vite",
+        "build": "vite build"
     }
 }

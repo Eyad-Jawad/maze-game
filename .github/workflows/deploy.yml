@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  upload:
+  build-and-upload:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,18 +22,20 @@ jobs:
 
       - name: Set up npm
         working-directory: src/game
-        run: |
-          npm ci --omit=dev
-          touch .nojekyll
+        run: npm ci --omit=dev
+
+      - name: Build the project
+        working-directory: src/game
+        run: npm run build
       
       - name: Upload files
         id: deployment
         uses: actions/upload-pages-artifact@v3
         with:
-          path: src/game/
+          path: src/game/dist
 
   deploy:
-    needs: upload
+    needs: build-and-upload
 
     permissions:
       pages: write
