@@ -16,13 +16,13 @@ jobs:
       - name: Set Up Node.js
         uses: actions/setup-node@v7
         with: 
-          node-version: '26'
+          node-version: '24'
           cache: npm
           cache-dependency-path: src/game/package-lock.json
 
       - name: Set up npm
         working-directory: src/game
-        run: npm ci --omit=dev
+        run: npm ci
 
       - name: Build the project
         working-directory: src/game
